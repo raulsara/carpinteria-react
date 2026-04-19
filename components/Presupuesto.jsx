@@ -122,7 +122,7 @@ export default function Presupuesto() {
           <p className="section-sub">Cuéntanos tu idea y te enviamos un presupuesto detallado sin ningún compromiso.</p>
           <div className="contact-items">
             {[
-              { icon: '📍', title: 'Taller',   text: 'C/ Eduard Toldrà, 56' },
+              { icon: '📍', title: 'Taller',   text: 'Paseo La Palma, 35' },
               { icon: '📞', title: 'Teléfono', text: '+34 612 345 678' },
               { icon: '✉️', title: 'Email',    text: 'info@maderarte.es' },
               { icon: '🕐', title: 'Horario',  text: 'Lun–Vie: 8:00–18:00 · Sáb: 9:00–13:00' },
