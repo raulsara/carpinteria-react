@@ -1,6 +1,6 @@
 'use client'
 import { useState, useEffect, useRef } from 'react'
-import { supabaseAdmin as supabase } from '../../lib/supabaseAdmin'
+import { supabase } from '../../lib/supabase'
 
 const PASS = 'maderarte2024'
 
@@ -51,24 +51,21 @@ export default function AdminPage() {
 
     setUploading(true)
     const file = form.file
-    const ext  = file.name.split('.').pop()
+    const ext  = file.name.split('.').pop().toLowerCase()
     const path = `${form.tipo_servicio}/${Date.now()}.${ext}`
     const tipo_media = file.type.startsWith('video') ? 'video' : 'foto'
 
-    const { error: upErr } = await supabase.storage.from('media').upload(path, file, { upsert: false })
-    if (upErr) { setUploading(false); return showToast('Error al subir archivo: ' + upErr.message, true) }
+    const fd = new FormData()
+    fd.append('file', file)
+    fd.append('path', path)
+    fd.append('tipo_servicio', form.tipo_servicio)
+    fd.append('tipo_media', tipo_media)
+    fd.append('titulo', form.titulo || '')
 
-    const { data: { publicUrl } } = supabase.storage.from('media').getPublicUrl(path)
+    const res  = await fetch('/api/upload', { method: 'POST', body: fd })
+    const json = await res.json()
 
-    const { error: dbErr } = await supabase.from('media').insert([{
-      tipo_servicio: form.tipo_servicio,
-      tipo_media,
-      url: publicUrl,
-      titulo: form.titulo || null,
-      storage_path: path,
-    }])
-
-    if (dbErr) { setUploading(false); return showToast('Error al guardar: ' + dbErr.message, true) }
+    if (!res.ok) { setUploading(false); return showToast('Error: ' + json.error, true) }
 
     showToast('✓ Archivo subido correctamente')
     setForm({ tipo_servicio: form.tipo_servicio, titulo: '', file: null })
