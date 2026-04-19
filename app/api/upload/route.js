@@ -1,25 +1,25 @@
 import { createClient } from '@supabase/supabase-js'
 import { NextResponse } from 'next/server'
 
-const SUPABASE_URL        = process.env.NEXT_PUBLIC_SUPABASE_URL
-const SUPABASE_ANON_KEY   = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY || SUPABASE_ANON_KEY
-
-const db = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY)
-
 export async function GET() {
-  const svc = process.env.SUPABASE_SERVICE_KEY
+  const svc  = process.env.SUPABASE_SERVICE_KEY
   const anon = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+  const url  = process.env.NEXT_PUBLIC_SUPABASE_URL
   return NextResponse.json({
-    has_svc: !!svc,
-    svc_len: svc?.length ?? 0,
+    url_start: url?.slice(0, 40) ?? 'none',
+    has_svc:   !!svc,
+    svc_len:   svc?.length ?? 0,
     svc_start: svc?.slice(0, 30) ?? 'none',
-    has_anon: !!anon,
-    anon_len: anon?.length ?? 0,
+    has_anon:  !!anon,
+    anon_len:  anon?.length ?? 0,
   })
 }
 
 export async function POST(req) {
+  const SUPABASE_URL         = process.env.NEXT_PUBLIC_SUPABASE_URL
+  const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY
+                             || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+
   const formData      = await req.formData()
   const file          = formData.get('file')
   const path          = formData.get('path')
@@ -27,9 +27,8 @@ export async function POST(req) {
   const tipo_media    = formData.get('tipo_media')
   const titulo        = formData.get('titulo')
 
-  const buffer = await file.arrayBuffer()
+  const buffer = Buffer.from(await file.arrayBuffer())
 
-  // Upload directo via fetch, evitando problemas de JWT en supabase-js
   const uploadRes = await fetch(
     `${SUPABASE_URL}/storage/v1/object/media/${path}`,
     {
@@ -38,19 +37,23 @@ export async function POST(req) {
         'Authorization': `Bearer ${SUPABASE_SERVICE_KEY}`,
         'apikey': SUPABASE_SERVICE_KEY,
         'Content-Type': file.type,
-        'x-upsert': 'false',
+        'x-upsert': 'true',
       },
       body: buffer,
     }
   )
 
   if (!uploadRes.ok) {
-    const err = await uploadRes.json().catch(() => ({ message: uploadRes.statusText }))
-    return NextResponse.json({ error: err.message || err.error || 'Upload failed' }, { status: 500 })
+    const errBody = await uploadRes.text()
+    return NextResponse.json(
+      { error: `[STORAGE ${uploadRes.status}] ${errBody}` },
+      { status: 500 }
+    )
   }
 
   const publicUrl = `${SUPABASE_URL}/storage/v1/object/public/media/${path}`
 
+  const db = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY)
   const { error: dbErr } = await db.from('media').insert([{
     tipo_servicio,
     tipo_media,
@@ -59,7 +62,7 @@ export async function POST(req) {
     storage_path: path,
   }])
 
-  if (dbErr) return NextResponse.json({ error: dbErr.message }, { status: 500 })
+  if (dbErr) return NextResponse.json({ error: `[DB] ${dbErr.message}` }, { status: 500 })
 
   return NextResponse.json({ url: publicUrl })
 }
