@@ -1,6 +1,6 @@
 'use client'
 import { useState, useEffect, useRef } from 'react'
-import { supabase } from '../../lib/supabase'
+import { supabaseAdmin as supabase } from '../../lib/supabaseAdmin'
 
 const PASS = 'maderarte2024'
 
