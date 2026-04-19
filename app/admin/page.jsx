@@ -1,0 +1,291 @@
+'use client'
+import { useState, useEffect, useRef } from 'react'
+import { supabase } from '../../lib/supabase'
+
+const PASS = 'maderarte2024'
+
+const SERVICIOS = [
+  { key: 'muebles',      label: 'Muebles a medida' },
+  { key: 'cocinas',      label: 'Cocinas integrales' },
+  { key: 'puertas',      label: 'Puertas y ventanas' },
+  { key: 'exteriores',   label: 'Terrazas y exteriores' },
+  { key: 'parquet',      label: 'Instalación de parquet' },
+  { key: 'restauracion', label: 'Restauración' },
+  { key: 'escaleras',    label: 'Estructuras y escaleras' },
+]
+
+export default function AdminPage() {
+  const [auth, setAuth]           = useState(false)
+  const [passInput, setPassInput] = useState('')
+  const [passError, setPassError] = useState(false)
+
+  const [media, setMedia]         = useState([])
+  const [loading, setLoading]     = useState(false)
+  const [uploading, setUploading] = useState(false)
+  const [toast, setToast]         = useState('')
+  const [filterSrv, setFilterSrv] = useState('all')
+
+  const [form, setForm] = useState({ tipo_servicio: '', titulo: '', file: null })
+  const fileRef = useRef()
+
+  useEffect(() => {
+    if (auth) fetchMedia()
+  }, [auth])
+
+  async function fetchMedia() {
+    setLoading(true)
+    const { data } = await supabase.from('media').select('*').order('created_at', { ascending: false })
+    setMedia(data || [])
+    setLoading(false)
+  }
+
+  function login(e) {
+    e.preventDefault()
+    if (passInput === PASS) { setAuth(true); setPassError(false) }
+    else setPassError(true)
+  }
+
+  async function handleUpload(e) {
+    e.preventDefault()
+    if (!form.file || !form.tipo_servicio) return showToast('Selecciona servicio y archivo', true)
+
+    setUploading(true)
+    const file = form.file
+    const ext  = file.name.split('.').pop()
+    const path = `${form.tipo_servicio}/${Date.now()}.${ext}`
+    const tipo_media = file.type.startsWith('video') ? 'video' : 'foto'
+
+    const { error: upErr } = await supabase.storage.from('media').upload(path, file, { upsert: false })
+    if (upErr) { setUploading(false); return showToast('Error al subir archivo: ' + upErr.message, true) }
+
+    const { data: { publicUrl } } = supabase.storage.from('media').getPublicUrl(path)
+
+    const { error: dbErr } = await supabase.from('media').insert([{
+      tipo_servicio: form.tipo_servicio,
+      tipo_media,
+      url: publicUrl,
+      titulo: form.titulo || null,
+      storage_path: path,
+    }])
+
+    if (dbErr) { setUploading(false); return showToast('Error al guardar: ' + dbErr.message, true) }
+
+    showToast('✓ Archivo subido correctamente')
+    setForm({ tipo_servicio: form.tipo_servicio, titulo: '', file: null })
+    fileRef.current.value = ''
+    fetchMedia()
+    setUploading(false)
+  }
+
+  async function handleDelete(item) {
+    if (!confirm(`¿Eliminar "${item.titulo || item.storage_path}"?`)) return
+    await supabase.storage.from('media').remove([item.storage_path])
+    await supabase.from('media').delete().eq('id', item.id)
+    showToast('Eliminado')
+    fetchMedia()
+  }
+
+  function showToast(msg, isErr = false) {
+    setToast({ msg, isErr })
+    setTimeout(() => setToast(''), 3500)
+  }
+
+  const filtered = filterSrv === 'all' ? media : media.filter(m => m.tipo_servicio === filterSrv)
+
+  if (!auth) return (
+    <div style={S.loginWrap}>
+      <form onSubmit={login} style={S.loginBox}>
+        <div style={S.loginLogo}>Mader<span style={{ color: '#c8874b' }}>Arte</span></div>
+        <h2 style={S.loginTitle}>Panel de administración</h2>
+        <input
+          type="password"
+          placeholder="Contraseña"
+          value={passInput}
+          onChange={e => setPassInput(e.target.value)}
+          style={{ ...S.input, ...(passError ? S.inputErr : {}) }}
+          autoFocus
+        />
+        {passError && <p style={S.errMsg}>Contraseña incorrecta</p>}
+        <button type="submit" style={S.btnPrimary}>Entrar</button>
+      </form>
+    </div>
+  )
+
+  return (
+    <div style={S.wrap}>
+      {/* SIDEBAR */}
+      <aside style={S.sidebar}>
+        <div style={S.sidebarLogo}>Mader<span style={{ color: '#c8874b' }}>Arte</span></div>
+        <nav style={S.nav}>
+          <a href="/" style={S.navLink}>← Ver web</a>
+        </nav>
+        <div style={S.sidebarSection}>Filtrar por servicio</div>
+        <button onClick={() => setFilterSrv('all')} style={{ ...S.filterBtn, ...(filterSrv === 'all' ? S.filterBtnActive : {}) }}>
+          Todos ({media.length})
+        </button>
+        {SERVICIOS.map(s => {
+          const count = media.filter(m => m.tipo_servicio === s.key).length
+          return (
+            <button key={s.key} onClick={() => setFilterSrv(s.key)}
+              style={{ ...S.filterBtn, ...(filterSrv === s.key ? S.filterBtnActive : {}) }}>
+              {s.label} ({count})
+            </button>
+          )
+        })}
+      </aside>
+
+      {/* MAIN */}
+      <main style={S.main}>
+        <div style={S.header}>
+          <h1 style={S.pageTitle}>Gestión de medios</h1>
+          <span style={S.badge}>{media.length} archivos</span>
+        </div>
+
+        {/* UPLOAD FORM */}
+        <div style={S.card}>
+          <h3 style={S.cardTitle}>Subir nuevo archivo</h3>
+          <form onSubmit={handleUpload} style={S.uploadForm}>
+            <div style={S.formRow}>
+              <div style={S.formGroup}>
+                <label style={S.label}>Tipo de servicio *</label>
+                <select
+                  value={form.tipo_servicio}
+                  onChange={e => setForm(f => ({ ...f, tipo_servicio: e.target.value }))}
+                  style={S.input} required
+                >
+                  <option value="">Selecciona...</option>
+                  {SERVICIOS.map(s => <option key={s.key} value={s.key}>{s.label}</option>)}
+                </select>
+              </div>
+              <div style={S.formGroup}>
+                <label style={S.label}>Título (opcional)</label>
+                <input
+                  type="text" placeholder="Ej: Cocina roble natural 2024"
+                  value={form.titulo}
+                  onChange={e => setForm(f => ({ ...f, titulo: e.target.value }))}
+                  style={S.input}
+                />
+              </div>
+            </div>
+            <div style={S.formGroup}>
+              <label style={S.label}>Archivo (foto o vídeo) *</label>
+              <input
+                ref={fileRef}
+                type="file"
+                accept="image/*,video/*"
+                onChange={e => setForm(f => ({ ...f, file: e.target.files[0] }))}
+                style={S.fileInput}
+                required
+              />
+              {form.file && (
+                <p style={S.fileInfo}>
+                  {form.file.name} · {(form.file.size / 1024 / 1024).toFixed(1)} MB
+                  {form.file.type.startsWith('video') ? ' · 🎥 Vídeo' : ' · 🖼️ Foto'}
+                </p>
+              )}
+            </div>
+            <button type="submit" disabled={uploading} style={S.btnPrimary}>
+              {uploading ? 'Subiendo...' : '↑ Subir archivo'}
+            </button>
+          </form>
+        </div>
+
+        {/* MEDIA GALLERY */}
+        <div style={S.card}>
+          <h3 style={S.cardTitle}>
+            {filterSrv === 'all' ? 'Todos los archivos' : SERVICIOS.find(s => s.key === filterSrv)?.label}
+            <span style={{ ...S.badge, marginLeft: 10 }}>{filtered.length}</span>
+          </h3>
+
+          {loading ? (
+            <p style={{ color: '#7a5c44', textAlign: 'center', padding: '40px' }}>Cargando...</p>
+          ) : filtered.length === 0 ? (
+            <div style={S.empty}>
+              <div style={{ fontSize: '3rem' }}>📂</div>
+              <p>No hay archivos en esta categoría</p>
+            </div>
+          ) : (
+            <div style={S.grid}>
+              {filtered.map(item => (
+                <div key={item.id} style={S.mediaCard}>
+                  <div style={S.mediaThumbnail}>
+                    {item.tipo_media === 'video' ? (
+                      <video src={item.url} style={S.mediaAsset} controls muted />
+                    ) : (
+                      <img src={item.url} alt={item.titulo || ''} style={S.mediaAsset} />
+                    )}
+                    <div style={S.mediaTypeBadge}>
+                      {item.tipo_media === 'video' ? '🎥' : '🖼️'}
+                    </div>
+                  </div>
+                  <div style={S.mediaInfo}>
+                    <p style={S.mediaTitle}>{item.titulo || <em style={{ color: '#aaa' }}>Sin título</em>}</p>
+                    <p style={S.mediaService}>{SERVICIOS.find(s => s.key === item.tipo_servicio)?.label}</p>
+                    <p style={S.mediaDate}>{new Date(item.created_at).toLocaleDateString('es-ES')}</p>
+                  </div>
+                  <button onClick={() => handleDelete(item)} style={S.btnDelete}>Eliminar</button>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </main>
+
+      {toast && (
+        <div style={{ ...S.toast, background: toast.isErr ? '#c0392b' : '#27ae60' }}>
+          {toast.msg}
+        </div>
+      )}
+    </div>
+  )
+}
+
+const S = {
+  loginWrap:   { minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#f5efe6' },
+  loginBox:    { background: '#fff', borderRadius: 16, padding: '48px 40px', width: 360, boxShadow: '0 8px 32px rgba(0,0,0,.1)', display: 'flex', flexDirection: 'column', gap: 16 },
+  loginLogo:   { fontFamily: "'Playfair Display',serif", fontSize: '1.8rem', color: '#3b2009', textAlign: 'center' },
+  loginTitle:  { fontFamily: "'Playfair Display',serif", fontSize: '1.1rem', color: '#3b2009', margin: 0, textAlign: 'center' },
+  errMsg:      { color: '#c0392b', fontSize: '.85rem', margin: 0 },
+
+  wrap:        { display: 'flex', minHeight: '100vh', background: '#f5efe6', fontFamily: "'Inter',sans-serif" },
+  sidebar:     { width: 240, minWidth: 240, background: '#3b2009', padding: '28px 16px', display: 'flex', flexDirection: 'column', gap: 4 },
+  sidebarLogo: { fontFamily: "'Playfair Display',serif", fontSize: '1.3rem', color: '#fff', marginBottom: 24, paddingLeft: 8 },
+  sidebarSection: { color: 'rgba(255,255,255,.4)', fontSize: '.7rem', letterSpacing: '1.5px', textTransform: 'uppercase', padding: '16px 8px 8px' },
+  nav:         { marginBottom: 8 },
+  navLink:     { color: 'rgba(255,255,255,.6)', textDecoration: 'none', fontSize: '.85rem', padding: '8px', display: 'block', borderRadius: 8 },
+  filterBtn:   { width: '100%', textAlign: 'left', background: 'transparent', border: 'none', color: 'rgba(255,255,255,.65)', cursor: 'pointer', padding: '8px 10px', borderRadius: 8, fontSize: '.82rem', marginBottom: 2 },
+  filterBtnActive: { background: 'rgba(200,135,75,.25)', color: '#e09a5d' },
+
+  main:        { flex: 1, padding: '32px 36px', overflow: 'auto' },
+  header:      { display: 'flex', alignItems: 'center', gap: 14, marginBottom: 28 },
+  pageTitle:   { fontFamily: "'Playfair Display',serif", fontSize: '1.8rem', color: '#3b2009', margin: 0 },
+  badge:       { background: '#c8874b', color: '#fff', borderRadius: 50, padding: '3px 12px', fontSize: '.78rem', fontWeight: 600 },
+
+  card:        { background: '#fff', borderRadius: 16, padding: '28px 32px', marginBottom: 24, boxShadow: '0 2px 12px rgba(0,0,0,.06)' },
+  cardTitle:   { fontFamily: "'Playfair Display',serif", fontSize: '1.15rem', color: '#3b2009', marginTop: 0, marginBottom: 22, display: 'flex', alignItems: 'center' },
+
+  uploadForm:  { display: 'flex', flexDirection: 'column', gap: 16 },
+  formRow:     { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 },
+  formGroup:   { display: 'flex', flexDirection: 'column', gap: 6 },
+  label:       { fontSize: '.78rem', fontWeight: 600, color: '#7a5c44', textTransform: 'uppercase', letterSpacing: '.8px' },
+  input:       { padding: '10px 14px', borderRadius: 10, border: '1.5px solid #ede0cc', fontFamily: "'Inter',sans-serif", fontSize: '.9rem', color: '#2c1a0e', outline: 'none', background: '#fff' },
+  inputErr:    { borderColor: '#c0392b' },
+  fileInput:   { padding: '10px 14px', borderRadius: 10, border: '1.5px solid #ede0cc', fontSize: '.85rem', background: '#faf6f0', cursor: 'pointer' },
+  fileInfo:    { margin: '4px 0 0', fontSize: '.8rem', color: '#7a5c44' },
+
+  btnPrimary:  { background: '#3b2009', color: '#fff', border: 'none', borderRadius: 50, padding: '12px 28px', fontFamily: "'Inter',sans-serif", fontWeight: 600, fontSize: '.9rem', cursor: 'pointer', alignSelf: 'flex-start' },
+  btnDelete:   { background: '#fdf0f0', color: '#c0392b', border: '1px solid #f5c6c6', borderRadius: 8, padding: '6px 14px', fontSize: '.8rem', cursor: 'pointer', fontFamily: "'Inter',sans-serif", marginTop: 'auto' },
+
+  grid:        { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 16 },
+  mediaCard:   { background: '#faf6f0', borderRadius: 12, overflow: 'hidden', border: '1px solid #ede0cc', display: 'flex', flexDirection: 'column' },
+  mediaThumbnail: { position: 'relative', aspectRatio: '4/3', background: '#ede0cc', overflow: 'hidden' },
+  mediaAsset:  { width: '100%', height: '100%', objectFit: 'cover' },
+  mediaTypeBadge: { position: 'absolute', top: 8, right: 8, background: 'rgba(0,0,0,.55)', borderRadius: 6, padding: '2px 6px', fontSize: '.75rem' },
+  mediaInfo:   { padding: '12px 14px 8px', flex: 1 },
+  mediaTitle:  { margin: '0 0 4px', fontSize: '.88rem', fontWeight: 600, color: '#2c1a0e' },
+  mediaService: { margin: '0 0 2px', fontSize: '.75rem', color: '#c8874b', fontWeight: 500 },
+  mediaDate:   { margin: 0, fontSize: '.72rem', color: '#aaa' },
+
+  empty:       { textAlign: 'center', padding: '48px', color: '#7a5c44' },
+  toast:       { position: 'fixed', bottom: 28, left: '50%', transform: 'translateX(-50%)', color: '#fff', padding: '12px 28px', borderRadius: 50, fontWeight: 600, fontSize: '.9rem', zIndex: 999 },
+}
