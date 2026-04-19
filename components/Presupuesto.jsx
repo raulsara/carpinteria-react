@@ -239,8 +239,8 @@ export default function Presupuesto() {
                 />
               </div>
               <div className="form-group">
-                <label>Descripción del proyecto</label>
-                <textarea placeholder="Dimensiones exactas, acabados, referencias..." value={form.descripcion} onChange={set('descripcion')} />
+                <label>Descripción</label>
+                <textarea placeholder="Cuéntanos qué quieres hacer, dimensiones, acabados, referencias..." rows={4} value={form.descripcion} onChange={set('descripcion')} />
               </div>
               <div className="form-nav">
                 <button type="button" className="btn-prev" onClick={() => next(1)}>← Atrás</button>
@@ -259,7 +259,8 @@ export default function Presupuesto() {
                   ['Plazo',     form.plazo],
                   ['Nombre',    form.nombre],
                   ['Teléfono',  form.telefono || '—'],
-                  ['Email',     form.email],
+                  ['Email',       form.email],
+                  ...(form.descripcion ? [['Descripción', form.descripcion]] : []),
                 ].map(([k, v]) => (
                   <div key={k} className="summary-row">
                     <span>{k}</span><span>{v}</span>
