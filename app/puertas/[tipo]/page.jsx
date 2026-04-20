@@ -36,7 +36,6 @@ export default function PuertaCategoria({ params }) {
     return (
       <main className="subpage">
         <div className="subpage-head">
-          <Link href="/puertas" className="subpage-back">Volver a Puertas</Link>
           <h1 className="section-title">Categoría no encontrada</h1>
           <button className="btn-primary" onClick={() => router.push('/puertas')}>Ver categorías</button>
         </div>
@@ -47,7 +46,6 @@ export default function PuertaCategoria({ params }) {
   return (
     <main className="subpage">
       <div className="subpage-head">
-        <Link href="/puertas" className="subpage-back">Volver a Puertas</Link>
         <span className="section-tag">{cat.titulo}</span>
         <h1 className="section-title">Catálogo de {cat.titulo.toLowerCase()}</h1>
         <p className="section-sub">{cat.desc}</p>
