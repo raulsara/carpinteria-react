@@ -761,20 +761,19 @@ footer { background: var(--brown-dark); }
   box-shadow: 0 12px 32px rgba(0,0,0,.1);
   border-color: #c8874b40;
 }
-.cat-icon {
+.cat-icon-img {
   margin-bottom: 16px;
-  width: 68px; height: 68px; border-radius: 16px;
-  background: linear-gradient(135deg, #faf6f0, #ede0cc);
-  display: flex; align-items: center; justify-content: center;
-  color: #8a5a2c;
-  transition: transform .3s, background .3s;
+  width: 128px; height: 128px;
+  align-self: center;
+  overflow: hidden;
+  transition: transform .3s;
 }
-.cat-icon svg { width: 40px; height: 40px; }
-.cat-card:hover .cat-icon {
-  background: linear-gradient(135deg, #c8874b, #a86d38);
-  color: #fff;
-  transform: scale(1.05);
+.cat-icon-img img {
+  width: 100%; height: 100%;
+  object-fit: contain;
+  display: block;
 }
+.cat-card:hover .cat-icon-img { transform: scale(1.06); }
 .cat-card h3 {
   font-family: 'Playfair Display', serif;
   font-size: 1.3rem; color: var(--brown-dark);
