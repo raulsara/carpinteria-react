@@ -15,13 +15,17 @@ const FILTERS = [
 ]
 
 const SERVICE_LABELS = {
-  muebles: 'Muebles a medida',
-  cocinas: 'Cocinas integrales',
-  puertas: 'Puertas y ventanas',
-  exteriores: 'Terrazas y exteriores',
-  parquet: 'Instalación de parquet',
-  restauracion: 'Restauración',
-  escaleras: 'Estructuras y escaleras',
+  muebles:            'Muebles a medida',
+  cocinas:            'Cocinas integrales',
+  puertas:            'Puertas y ventanas',
+  puertas_interiores: 'Puertas interiores',
+  puertas_exteriores: 'Puertas exteriores',
+  puertas_vidrio:     'Puertas con vidrio',
+  puertas_lacadas:    'Puertas lacadas',
+  exteriores:         'Terrazas y exteriores',
+  parquet:            'Instalación de parquet',
+  restauracion:       'Restauración',
+  escaleras:          'Estructuras y escaleras',
 }
 
 export default function Portfolio() {
@@ -38,9 +42,12 @@ export default function Portfolio() {
       })
   }, [])
 
+  const matchCat = (m, key) => m.tipo_servicio === key
+    || (key === 'puertas' && m.tipo_servicio?.startsWith('puertas_'))
+
   const filtered = active === 'all'
     ? media
-    : media.filter(m => m.tipo_servicio === active)
+    : media.filter(m => matchCat(m, active))
 
   return (
     <section id="portfolio">
@@ -53,7 +60,7 @@ export default function Portfolio() {
         {FILTERS.map(f => {
           const count = f.key === 'all'
             ? media.length
-            : media.filter(m => m.tipo_servicio === f.key).length
+            : media.filter(m => matchCat(m, f.key)).length
           return (
             <button
               key={f.key}

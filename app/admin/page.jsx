@@ -5,13 +5,17 @@ import { supabase } from '../../lib/supabase'
 const PASS = 'maderarte2024'
 
 const SERVICIOS = [
-  { key: 'muebles',      label: 'Muebles a medida' },
-  { key: 'cocinas',      label: 'Cocinas integrales' },
-  { key: 'puertas',      label: 'Puertas y ventanas' },
-  { key: 'exteriores',   label: 'Terrazas y exteriores' },
-  { key: 'parquet',      label: 'Instalación de parquet' },
-  { key: 'restauracion', label: 'Restauración' },
-  { key: 'escaleras',    label: 'Estructuras y escaleras' },
+  { key: 'muebles',             label: 'Muebles a medida' },
+  { key: 'cocinas',             label: 'Cocinas integrales' },
+  { key: 'puertas',             label: 'Puertas y ventanas (general)' },
+  { key: 'puertas_interiores',  label: '› Puertas interiores' },
+  { key: 'puertas_exteriores',  label: '› Puertas exteriores' },
+  { key: 'puertas_vidrio',      label: '› Puertas con vidrio' },
+  { key: 'puertas_lacadas',     label: '› Puertas lacadas' },
+  { key: 'exteriores',          label: 'Terrazas y exteriores' },
+  { key: 'parquet',             label: 'Instalación de parquet' },
+  { key: 'restauracion',        label: 'Restauración' },
+  { key: 'escaleras',           label: 'Estructuras y escaleras' },
 ]
 
 export default function AdminPage() {

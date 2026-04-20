@@ -726,3 +726,83 @@ footer { background: var(--brown-dark); }
   .form-row { grid-template-columns: 1fr; }
   .about-badge-float { right: 0; }
 }
+
+/* ── SUBPAGES (Puertas catálogo) ── */
+.subpage {
+  min-height: 100vh;
+  padding: 72px 6% 96px;
+  background: var(--cream);
+  font-family: 'Inter', sans-serif;
+}
+.subpage-head {
+  max-width: 900px; margin: 0 auto 48px;
+  text-align: center;
+}
+.subpage-back {
+  display: inline-block; margin-bottom: 20px;
+  color: var(--text-muted); text-decoration: none;
+  font-size: .9rem; font-weight: 500;
+  transition: color .2s;
+}
+.subpage-back:hover { color: var(--brown-dark); }
+
+.cat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 24px;
+  max-width: 1100px; margin: 0 auto;
+}
+.cat-card {
+  background: var(--white);
+  border-radius: 18px;
+  padding: 36px 28px;
+  text-decoration: none;
+  color: inherit;
+  box-shadow: 0 2px 12px rgba(0,0,0,.05);
+  transition: transform .25s, box-shadow .25s;
+  display: flex; flex-direction: column;
+  border: 1.5px solid transparent;
+}
+.cat-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 32px rgba(0,0,0,.1);
+  border-color: #c8874b40;
+}
+.cat-icon {
+  font-size: 2.4rem; margin-bottom: 14px;
+  width: 64px; height: 64px; border-radius: 16px;
+  background: linear-gradient(135deg, #faf6f0, #ede0cc);
+  display: flex; align-items: center; justify-content: center;
+}
+.cat-card h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.3rem; color: var(--brown-dark);
+  margin: 0 0 10px;
+}
+.cat-card p {
+  color: var(--text-muted); font-size: .92rem;
+  line-height: 1.55; margin: 0 0 20px;
+  flex: 1;
+}
+.cat-count {
+  color: #c8874b; font-weight: 600; font-size: .88rem;
+  margin-top: auto;
+}
+
+/* Service card link variant */
+.service-card-link {
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+  display: flex; flex-direction: column;
+}
+.service-card-link:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px rgba(0,0,0,.1);
+}
+.service-link {
+  display: inline-block;
+  margin-top: 14px;
+  color: #c8874b;
+  font-weight: 600; font-size: .88rem;
+}
