@@ -23,9 +23,10 @@ export default function Presupuesto() {
 
   function validate() {
     const errs = {}
-    if (!form.tipo)   errs.tipo = true
-    if (!form.nombre?.trim()) errs.nombre = true
-    if (!form.email || !form.email.includes('@')) errs.email = true
+    if (!form.tipo)                              errs.tipo     = true
+    if (!form.nombre?.trim())                    errs.nombre   = true
+    if (!form.telefono?.trim())                  errs.telefono = true
+    if (!form.email || !form.email.includes('@')) errs.email   = true
     setErrors(errs)
     return Object.keys(errs).length === 0
   }
@@ -129,8 +130,12 @@ export default function Presupuesto() {
                 />
               </div>
               <div className="form-group">
-                <label>Teléfono</label>
-                <input type="tel" placeholder="+34 600 000 000" value={form.telefono} onChange={set('telefono')} />
+                <label>Teléfono *</label>
+                <input
+                  type="tel" placeholder="+34 600 000 000"
+                  value={form.telefono} onChange={set('telefono')}
+                  className={errors.telefono ? 'field-error' : ''}
+                />
               </div>
             </div>
 
