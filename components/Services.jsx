@@ -4,7 +4,7 @@ import { useEffect, useRef } from 'react'
 import Reveal from './Reveal'
 
 const SERVICES = [
-  { icon: '🟫', title: 'Instalación de Parquet',  desc: 'Colocación de parquet macizo, laminado y multicapa con acabados perfectos. Lijado, barnizado y restauración de suelos.' },
+  { icon: '🟫', title: 'Instalación de Parquet',  desc: 'Colocación de parquet macizo, laminado y multicapa con acabados perfectos. Lijado, barnizado y restauración de suelos.', href: '/parquet' },
   { icon: '🚪', title: 'Puertas y Ventanas',      desc: 'Carpintería exterior e interior en maderas nobles. Fabricación e instalación con sellado perfecto y acabado a medida.', href: '/puertas' },
   { icon: '🍳', title: 'Cocinas Integrales',      desc: 'Cocinas completas en madera maciza o lacada, con diseño funcional y estética impecable adaptada a tu espacio.' },
   { icon: '🏡', title: 'Terrazas y Exteriores',   desc: 'Pérgolas, tarimas, cerramientos y mobiliario para exterior con maderas tratadas que resisten la intemperie.' },
