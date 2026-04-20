@@ -202,12 +202,19 @@ section { padding: 96px 6%; }
 .service-card:hover { transform: translateY(-5px); box-shadow: 0 16px 40px rgba(59,32,9,.1); }
 
 .service-icon {
-  width: 56px; height: 56px;
+  width: 60px; height: 60px;
   background: var(--brown-dark);
   border-radius: 14px;
   display: flex; align-items: center; justify-content: center;
-  font-size: 1.6rem;
+  color: #e9cfa8;
   margin-bottom: 22px;
+  transition: background .25s, color .25s, transform .25s;
+}
+.service-icon svg { width: 32px; height: 32px; }
+.service-card:hover .service-icon {
+  background: linear-gradient(135deg, #c8874b, #a86d38);
+  color: #fff;
+  transform: scale(1.05);
 }
 
 .service-card h3 { font-family: 'Playfair Display', serif; font-size: 1.2rem; margin-bottom: 10px; }
