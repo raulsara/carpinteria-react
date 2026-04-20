@@ -2,7 +2,7 @@ import './globals.css'
 
 export const metadata = {
   title: 'MaderArte — Carpintería Artesanal',
-  description: 'Carpintería artesanal con más de 30 años de experiencia. Muebles a medida, cocinas, puertas y más.',
+  description: 'Carpintería artesanal con más de 35 años de experiencia. Muebles a medida, cocinas, puertas y más.',
 }
 
 export default function RootLayout({ children }) {

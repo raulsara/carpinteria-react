@@ -4,7 +4,7 @@ export default function Footer() {
       <div className="footer-top">
         <div className="footer-brand">
           <a href="#hero" className="nav-logo">Mader<span>Arte</span></a>
-          <p>Carpintería artesanal con más de 30 años de experiencia. Cada pieza, una obra.</p>
+          <p>Carpintería artesanal con más de 35 años de experiencia. Cada pieza, una obra.</p>
         </div>
         <div className="footer-col">
           <h5>Servicios</h5>

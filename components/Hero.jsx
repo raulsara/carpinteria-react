@@ -12,7 +12,7 @@ export default function Hero() {
           <a href="#portfolio" className="btn-outline">Ver trabajos</a>
         </div>
         <div className="hero-stats">
-          <div className="stat"><strong>30+</strong><span>Años de experiencia</span></div>
+          <div className="stat"><strong>35+</strong><span>Años de experiencia</span></div>
           <div className="stat"><strong>640</strong><span>Proyectos completados</span></div>
           <div className="stat"><strong>100%</strong><span>Clientes satisfechos</span></div>
         </div>
