@@ -95,10 +95,6 @@ export default function Portfolio() {
                 ) : (
                   <img src={item.url} alt={item.titulo || ''} className="portfolio-media" loading="lazy" />
                 )}
-                <div className="portfolio-overlay">
-                  <h4>{item.titulo || SERVICE_LABELS[item.tipo_servicio]}</h4>
-                  <span>{SERVICE_LABELS[item.tipo_servicio]} {item.tipo_media === 'video' ? '· 🎥' : ''}</span>
-                </div>
               </div>
               {item.descripcion && (
                 <p className="portfolio-desc">{item.descripcion}</p>
