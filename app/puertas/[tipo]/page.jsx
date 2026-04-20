@@ -63,15 +63,17 @@ export default function PuertaCategoria({ params }) {
       ) : (
         <div className="portfolio-grid">
           {items.map(item => (
-            <div key={item.id} className="portfolio-item" onClick={() => setLightbox(item)}>
-              {item.tipo_media === 'video' ? (
-                <video src={item.url} className="portfolio-media" muted playsInline />
-              ) : (
-                <img src={item.url} alt={item.titulo || ''} className="portfolio-media" loading="lazy" />
-              )}
-              <div className="portfolio-overlay">
-                <h4>{item.titulo || cat.titulo}</h4>
+            <div key={item.id} className="portfolio-card">
+              <div className="portfolio-item" onClick={() => setLightbox(item)}>
+                {item.tipo_media === 'video' ? (
+                  <video src={item.url} className="portfolio-media" muted playsInline />
+                ) : (
+                  <img src={item.url} alt={item.titulo || ''} className="portfolio-media" loading="lazy" />
+                )}
               </div>
+              {item.descripcion && (
+                <p className="portfolio-desc">{item.descripcion}</p>
+              )}
             </div>
           ))}
         </div>
