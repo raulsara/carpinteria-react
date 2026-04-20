@@ -1,6 +1,6 @@
 'use client'
 import Link from 'next/link'
-import { useEffect, useState, use } from 'react'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { supabase } from '../../../lib/supabase'
 
@@ -12,7 +12,7 @@ const CATEGORIAS = {
 }
 
 export default function PuertaCategoria({ params }) {
-  const { tipo: slug } = use(params)
+  const slug = params?.tipo
   const router = useRouter()
   const cat = CATEGORIAS[slug]
 
