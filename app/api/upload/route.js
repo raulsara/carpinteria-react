@@ -7,7 +7,7 @@ export async function POST(req) {
                              || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
   const body = await req.json()
-  const { action, path, tipo_servicio, tipo_media, titulo } = body
+  const { action, path, tipo_servicio, tipo_media, titulo, descripcion } = body
 
   const admin = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY, {
     auth: { persistSession: false },
@@ -28,6 +28,7 @@ export async function POST(req) {
       tipo_media,
       url: publicUrl,
       titulo: titulo || null,
+      descripcion: descripcion || null,
       storage_path: path,
     }
     const SPEC_FIELDS = ['nombre','sku','coleccion','formato','formato_busqueda','stock','uso','sector','packaging','anclaje','un_venta','bisel']

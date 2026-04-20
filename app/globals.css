@@ -294,8 +294,22 @@ section { padding: 96px 6%; }
 .portfolio-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 20px;
+  gap: 28px;
   max-width: 1100px; margin: 0 auto;
+}
+.portfolio-card {
+  display: flex; flex-direction: column; gap: 12px;
+}
+.portfolio-desc {
+  margin: 0;
+  font-size: .88rem;
+  line-height: 1.5;
+  color: var(--text-muted);
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  min-height: calc(1.5em * 4);
 }
 
 .portfolio-item {

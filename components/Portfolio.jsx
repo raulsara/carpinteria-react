@@ -86,16 +86,21 @@ export default function Portfolio() {
       ) : (
         <div className="portfolio-grid">
           {filtered.map(item => (
-            <div key={item.id} className="portfolio-item" onClick={() => setLightbox(item)}>
-              {item.tipo_media === 'video' ? (
-                <video src={item.url} className="portfolio-media" muted playsInline />
-              ) : (
-                <img src={item.url} alt={item.titulo || ''} className="portfolio-media" loading="lazy" />
-              )}
-              <div className="portfolio-overlay">
-                <h4>{item.titulo || SERVICE_LABELS[item.tipo_servicio]}</h4>
-                <span>{SERVICE_LABELS[item.tipo_servicio]} {item.tipo_media === 'video' ? '· 🎥' : ''}</span>
+            <div key={item.id} className="portfolio-card">
+              <div className="portfolio-item" onClick={() => setLightbox(item)}>
+                {item.tipo_media === 'video' ? (
+                  <video src={item.url} className="portfolio-media" muted playsInline />
+                ) : (
+                  <img src={item.url} alt={item.titulo || ''} className="portfolio-media" loading="lazy" />
+                )}
+                <div className="portfolio-overlay">
+                  <h4>{item.titulo || SERVICE_LABELS[item.tipo_servicio]}</h4>
+                  <span>{SERVICE_LABELS[item.tipo_servicio]} {item.tipo_media === 'video' ? '· 🎥' : ''}</span>
+                </div>
               </div>
+              {item.descripcion && (
+                <p className="portfolio-desc">{item.descripcion}</p>
+              )}
             </div>
           ))}
         </div>

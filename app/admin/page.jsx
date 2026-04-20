@@ -31,7 +31,7 @@ export default function AdminPage() {
   const [filterSrv, setFilterSrv] = useState('all')
 
   const EMPTY_FORM = {
-    tipo_servicio: '', titulo: '', file: null,
+    tipo_servicio: '', titulo: '', descripcion: '', file: null,
     nombre: '', sku: '',
     coleccion: 'DOLCE (DOL)',
     formato: '1261 x 192 x 7',
@@ -104,6 +104,7 @@ export default function AdminPage() {
           action: 'commit',
           path, tipo_servicio: form.tipo_servicio, tipo_media,
           titulo: form.titulo || form.nombre || '',
+          descripcion: form.descripcion || '',
           ...extra,
         }),
       })
@@ -210,6 +211,16 @@ export default function AdminPage() {
                   style={S.input}
                 />
               </div>
+            </div>
+            <div style={S.formGroup}>
+              <label style={S.label}>Descripción (opcional, máx. 4 líneas)</label>
+              <textarea
+                rows={4}
+                placeholder="Detalles del trabajo: material, acabado, dimensiones, etc."
+                value={form.descripcion}
+                onChange={e => setForm(f => ({ ...f, descripcion: e.target.value }))}
+                style={{ ...S.input, resize: 'vertical', fontFamily: "'Inter', sans-serif" }}
+              />
             </div>
             {isParquetCat && (
               <div style={{ background: '#faf6f0', padding: '18px 20px', borderRadius: 12, border: '1px solid #ede0cc' }}>
