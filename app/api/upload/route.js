@@ -1,20 +1,6 @@
 import { createClient } from '@supabase/supabase-js'
 import { NextResponse } from 'next/server'
 
-export async function GET() {
-  const svc  = process.env.SUPABASE_SERVICE_KEY
-  const anon = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-  const url  = process.env.NEXT_PUBLIC_SUPABASE_URL
-  return NextResponse.json({
-    url_start: url?.slice(0, 40) ?? 'none',
-    has_svc:   !!svc,
-    svc_len:   svc?.length ?? 0,
-    svc_start: svc?.slice(0, 30) ?? 'none',
-    has_anon:  !!anon,
-    anon_len:  anon?.length ?? 0,
-  })
-}
-
 export async function POST(req) {
   const SUPABASE_URL         = process.env.NEXT_PUBLIC_SUPABASE_URL
   const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY

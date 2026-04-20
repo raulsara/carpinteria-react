@@ -3,49 +3,44 @@ import { useState, useEffect } from 'react'
 import Reveal from './Reveal'
 import { supabase } from '../lib/supabase'
 
-const STATIC_ITEMS = [
-  { cat: 'muebles',      thumb: 'p-muebles',      icon: '🛋️', title: 'Armario empotrado roble',    label: 'Muebles' },
-  { cat: 'cocinas',      thumb: 'p-cocinas',      icon: '🍳', title: 'Cocina en madera maciza',     label: 'Cocinas' },
-  { cat: 'puertas',      thumb: 'p-puertas',      icon: '🚪', title: 'Puerta de entrada nogal',     label: 'Puertas' },
-  { cat: 'exteriores',   thumb: 'p-exteriores',   icon: '🏡', title: 'Pérgola de jardín',           label: 'Exteriores' },
-  { cat: 'muebles',      thumb: 'p-restauracion', icon: '🔄', title: 'Restauración cómoda antigua',  label: 'Muebles' },
-  { cat: 'muebles',      thumb: 'p-escaleras',    icon: '🪜', title: 'Escalera madera maciza',      label: 'Muebles' },
-]
-
 const FILTERS = [
-  { key: 'all',        label: 'Todos' },
-  { key: 'muebles',    label: 'Muebles' },
-  { key: 'puertas',    label: 'Puertas' },
-  { key: 'cocinas',    label: 'Cocinas' },
-  { key: 'exteriores', label: 'Exteriores' },
-  { key: 'parquet',    label: 'Parquet' },
+  { key: 'all',          label: 'Todos' },
+  { key: 'muebles',      label: 'Muebles' },
+  { key: 'cocinas',      label: 'Cocinas' },
+  { key: 'puertas',      label: 'Puertas' },
+  { key: 'exteriores',   label: 'Exteriores' },
+  { key: 'parquet',      label: 'Parquet' },
   { key: 'restauracion', label: 'Restauración' },
+  { key: 'escaleras',    label: 'Escaleras' },
 ]
 
 const SERVICE_LABELS = {
-  muebles: 'Muebles', cocinas: 'Cocinas', puertas: 'Puertas',
-  exteriores: 'Exteriores', parquet: 'Parquet', restauracion: 'Restauración', escaleras: 'Escaleras',
+  muebles: 'Muebles a medida',
+  cocinas: 'Cocinas integrales',
+  puertas: 'Puertas y ventanas',
+  exteriores: 'Terrazas y exteriores',
+  parquet: 'Instalación de parquet',
+  restauracion: 'Restauración',
+  escaleras: 'Estructuras y escaleras',
 }
 
 export default function Portfolio() {
   const [active, setActive]     = useState('all')
-  const [dbMedia, setDbMedia]   = useState([])
+  const [media, setMedia]       = useState([])
+  const [loading, setLoading]   = useState(true)
   const [lightbox, setLightbox] = useState(null)
 
   useEffect(() => {
     supabase.from('media').select('*').order('created_at', { ascending: false })
-      .then(({ data }) => setDbMedia(data || []))
+      .then(({ data }) => {
+        setMedia(data || [])
+        setLoading(false)
+      })
   }, [])
 
-  const allItems = [
-    ...dbMedia.map(m => ({ fromDb: true, ...m })),
-    ...STATIC_ITEMS,
-  ]
-
-  const filtered = active === 'all' ? allItems : allItems.filter(item => {
-    const cat = item.fromDb ? item.tipo_servicio : item.cat
-    return cat === active
-  })
+  const filtered = active === 'all'
+    ? media
+    : media.filter(m => m.tipo_servicio === active)
 
   return (
     <section id="portfolio">
@@ -55,43 +50,48 @@ export default function Portfolio() {
         <p className="section-sub">Una selección de proyectos recientes en distintas especialidades.</p>
       </Reveal>
       <Reveal className="portfolio-filters">
-        {FILTERS.map(f => (
-          <button
-            key={f.key}
-            className={`filter-btn ${active === f.key ? 'active' : ''}`}
-            onClick={() => setActive(f.key)}
-          >
-            {f.label}
-          </button>
-        ))}
+        {FILTERS.map(f => {
+          const count = f.key === 'all'
+            ? media.length
+            : media.filter(m => m.tipo_servicio === f.key).length
+          return (
+            <button
+              key={f.key}
+              className={`filter-btn ${active === f.key ? 'active' : ''}`}
+              onClick={() => setActive(f.key)}
+            >
+              {f.label} {count > 0 && <span className="filter-count">({count})</span>}
+            </button>
+          )
+        })}
       </Reveal>
-      <div className="portfolio-grid">
-        {filtered.map((item, i) => (
-          item.fromDb ? (
+
+      {loading ? (
+        <p className="portfolio-empty">Cargando trabajos...</p>
+      ) : filtered.length === 0 ? (
+        <p className="portfolio-empty">
+          {active === 'all'
+            ? 'Aún no hay trabajos publicados. ¡Vuelve pronto!'
+            : `Aún no tenemos fotos de "${SERVICE_LABELS[active] || active}" publicadas.`}
+        </p>
+      ) : (
+        <div className="portfolio-grid">
+          {filtered.map(item => (
             <div key={item.id} className="portfolio-item" onClick={() => setLightbox(item)}>
               {item.tipo_media === 'video' ? (
                 <video src={item.url} className="portfolio-media" muted playsInline />
               ) : (
-                <img src={item.url} alt={item.titulo || ''} className="portfolio-media" />
+                <img src={item.url} alt={item.titulo || ''} className="portfolio-media" loading="lazy" />
               )}
               <div className="portfolio-overlay">
                 <h4>{item.titulo || SERVICE_LABELS[item.tipo_servicio]}</h4>
                 <span>{SERVICE_LABELS[item.tipo_servicio]} {item.tipo_media === 'video' ? '· 🎥' : ''}</span>
               </div>
             </div>
-          ) : (
-            <div key={i} className={`portfolio-item ${active !== 'all' && active !== item.cat ? 'hidden' : ''}`}>
-              <div className={`portfolio-thumb ${item.thumb}`}>{item.icon}</div>
-              <div className="portfolio-overlay">
-                <h4>{item.title}</h4>
-                <span>{item.label}</span>
-              </div>
-            </div>
-          )
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
 
-      {/* LIGHTBOX */}
       {lightbox && (
         <div className="lightbox" onClick={() => setLightbox(null)}>
           <div className="lightbox-inner" onClick={e => e.stopPropagation()}>

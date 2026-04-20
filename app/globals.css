@@ -284,6 +284,12 @@ section { padding: 96px 6%; }
 }
 .filter-btn.active,
 .filter-btn:hover { background: var(--brown-dark); color: var(--white); border-color: var(--brown-dark); }
+.filter-count { opacity: .7; font-weight: 500; margin-left: 2px; }
+
+.portfolio-empty {
+  text-align: center; padding: 60px 20px; color: var(--text-muted);
+  font-size: 1rem; max-width: 500px; margin: 0 auto;
+}
 
 .portfolio-grid {
   display: grid;
