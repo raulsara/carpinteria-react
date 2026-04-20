@@ -1,6 +1,20 @@
 import { createClient } from '@supabase/supabase-js'
 import { NextResponse } from 'next/server'
 
+export async function GET() {
+  const url  = process.env.NEXT_PUBLIC_SUPABASE_URL
+  const anon = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+  try {
+    const r = await fetch(`${url}/rest/v1/media?select=id,tipo_servicio`, {
+      headers: { 'Authorization': `Bearer ${anon}`, 'apikey': anon },
+    })
+    const body = await r.text()
+    return NextResponse.json({ url, status: r.status, body: body.slice(0, 500) })
+  } catch (e) {
+    return NextResponse.json({ error: e.message })
+  }
+}
+
 export async function POST(req) {
   const SUPABASE_URL         = process.env.NEXT_PUBLIC_SUPABASE_URL
   const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY
