@@ -14,6 +14,7 @@ const SERVICIOS = [
   { key: 'puertas_lacadas',     label: '› Puertas lacadas' },
   { key: 'exteriores',          label: 'Terrazas y exteriores' },
   { key: 'parquet',             label: 'Instalación de parquet' },
+  { key: 'parquet_catalogo',    label: '› Catálogo de parquet' },
   { key: 'restauracion',        label: 'Restauración' },
   { key: 'escaleras',           label: 'Estructuras y escaleras' },
 ]

@@ -15,7 +15,7 @@ export default function ParquetPage() {
   useEffect(() => {
     supabase.from('media')
       .select('*')
-      .eq('tipo_servicio', 'parquet')
+      .eq('tipo_servicio', 'parquet_catalogo')
       .order('created_at', { ascending: false })
       .then(({ data }) => {
         setItems(data || [])

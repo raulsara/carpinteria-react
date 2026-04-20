@@ -24,6 +24,7 @@ const SERVICE_LABELS = {
   puertas_lacadas:    'Puertas lacadas',
   exteriores:         'Terrazas y exteriores',
   parquet:            'Instalación de parquet',
+  parquet_catalogo:   'Catálogo de parquet',
   restauracion:       'Restauración',
   escaleras:          'Estructuras y escaleras',
 }
@@ -44,6 +45,7 @@ export default function Portfolio() {
 
   const matchCat = (m, key) => m.tipo_servicio === key
     || (key === 'puertas' && m.tipo_servicio?.startsWith('puertas_'))
+    || (key === 'parquet' && m.tipo_servicio === 'parquet_catalogo')
 
   const filtered = active === 'all'
     ? media
