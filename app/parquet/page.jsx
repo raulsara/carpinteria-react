@@ -1,14 +1,12 @@
 'use client'
 import Link from 'next/link'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { supabase } from '../../lib/supabase'
 
 export default function ParquetPage() {
-  const [items, setItems]       = useState([])
-  const [loading, setLoading]   = useState(true)
-  const [lightbox, setLightbox] = useState(null)
-  const [page, setPage]         = useState(0)
-  const trackRef = useRef(null)
+  const [items, setItems]     = useState([])
+  const [loading, setLoading] = useState(true)
+  const [page, setPage]       = useState(0)
 
   const PER_PAGE = 5
 
@@ -54,16 +52,21 @@ export default function ParquetPage() {
           {totalPages > 1 && (
             <button className="carousel-arrow carousel-prev" onClick={() => go(-1)} aria-label="Anterior">‹</button>
           )}
-          <div className="carousel-track" ref={trackRef}>
+          <div className="carousel-track">
             {visible.map(item => (
-              <div key={item.id} className="carousel-item" onClick={() => setLightbox(item)}>
+              <Link key={item.id} href={`/parquet/${item.id}`} className="carousel-item">
                 {item.tipo_media === 'video' ? (
                   <video src={item.url} muted playsInline />
                 ) : (
-                  <img src={item.url} alt={item.titulo || 'Parquet'} loading="lazy" />
+                  <img src={item.url} alt={item.nombre || item.titulo || 'Parquet'} loading="lazy" />
                 )}
-                {item.titulo && <div className="carousel-caption">{item.titulo}</div>}
-              </div>
+                {(item.nombre || item.titulo) && (
+                  <div className="carousel-caption">
+                    {item.nombre || item.titulo}
+                    {item.sku && <span style={{ opacity: .7, fontSize: '.75rem', display: 'block' }}>{item.sku}</span>}
+                  </div>
+                )}
+              </Link>
             ))}
           </div>
           {totalPages > 1 && (
@@ -85,19 +88,6 @@ export default function ParquetPage() {
         </div>
       )}
 
-      {lightbox && (
-        <div className="lightbox" onClick={() => setLightbox(null)}>
-          <div className="lightbox-inner" onClick={e => e.stopPropagation()}>
-            <button className="lightbox-close" onClick={() => setLightbox(null)}>✕</button>
-            {lightbox.tipo_media === 'video' ? (
-              <video src={lightbox.url} controls autoPlay style={{ maxWidth: '100%', maxHeight: '80vh', borderRadius: 12 }} />
-            ) : (
-              <img src={lightbox.url} alt={lightbox.titulo || ''} style={{ maxWidth: '100%', maxHeight: '80vh', borderRadius: 12, objectFit: 'contain' }} />
-            )}
-            {lightbox.titulo && <p className="lightbox-title">{lightbox.titulo}</p>}
-          </div>
-        </div>
-      )}
     </main>
   )
 }

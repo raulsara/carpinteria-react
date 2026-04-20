@@ -6,7 +6,8 @@ export async function POST(req) {
   const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY
                              || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
-  const { action, path, tipo_servicio, tipo_media, titulo } = await req.json()
+  const body = await req.json()
+  const { action, path, tipo_servicio, tipo_media, titulo } = body
 
   const admin = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY, {
     auth: { persistSession: false },
@@ -22,13 +23,17 @@ export async function POST(req) {
 
   if (action === 'commit') {
     const publicUrl = `${SUPABASE_URL}/storage/v1/object/public/media/${path}`
-    const { error } = await admin.from('media').insert([{
+    const row = {
       tipo_servicio,
       tipo_media,
       url: publicUrl,
       titulo: titulo || null,
       storage_path: path,
-    }])
+    }
+    const SPEC_FIELDS = ['nombre','sku','coleccion','formato','formato_busqueda','stock','uso','sector','packaging','anclaje','un_venta','bisel']
+    SPEC_FIELDS.forEach(k => { if (body[k]) row[k] = body[k] })
+
+    const { error } = await admin.from('media').insert([row])
     if (error) return NextResponse.json({ error: error.message }, { status: 500 })
     return NextResponse.json({ url: publicUrl })
   }

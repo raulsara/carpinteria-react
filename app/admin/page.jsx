@@ -30,7 +30,22 @@ export default function AdminPage() {
   const [toast, setToast]         = useState('')
   const [filterSrv, setFilterSrv] = useState('all')
 
-  const [form, setForm] = useState({ tipo_servicio: '', titulo: '', file: null })
+  const EMPTY_FORM = {
+    tipo_servicio: '', titulo: '', file: null,
+    nombre: '', sku: '',
+    coleccion: 'DOLCE (DOL)',
+    formato: '1261 x 192 x 7',
+    formato_busqueda: 'Lama standard',
+    stock: 'En stock',
+    uso: 'Residencial intenso / Comercial moderado',
+    sector: 'Contract, Residencial, Retail',
+    packaging: '10 lamas - caja - 2,421 m² - 15,2 kg | 64 cajas - pallet - 116,74m² - 818 Kg',
+    anclaje: 'Uniclic',
+    un_venta: 'm²',
+    bisel: 'Sin bisel',
+  }
+  const [form, setForm] = useState(EMPTY_FORM)
+  const isParquetCat = form.tipo_servicio === 'parquet_catalogo'
   const fileRef = useRef()
 
   useEffect(() => {
@@ -74,20 +89,29 @@ export default function AdminPage() {
         .uploadToSignedUrl(sign.path, sign.token, file, { contentType: file.type })
       if (upErr) throw new Error(upErr.message)
 
+      const extra = form.tipo_servicio === 'parquet_catalogo' ? {
+        nombre: form.nombre, sku: form.sku,
+        coleccion: form.coleccion, formato: form.formato,
+        formato_busqueda: form.formato_busqueda, stock: form.stock,
+        uso: form.uso, sector: form.sector, packaging: form.packaging,
+        anclaje: form.anclaje, un_venta: form.un_venta, bisel: form.bisel,
+      } : {}
+
       const commitRes = await fetch('/api/upload', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           action: 'commit',
           path, tipo_servicio: form.tipo_servicio, tipo_media,
-          titulo: form.titulo || '',
+          titulo: form.titulo || form.nombre || '',
+          ...extra,
         }),
       })
       const commit = await commitRes.json()
       if (!commitRes.ok) throw new Error(commit.error || 'No se pudo guardar')
 
       showToast('✓ Archivo subido correctamente')
-      setForm({ tipo_servicio: form.tipo_servicio, titulo: '', file: null })
+      setForm({ ...EMPTY_FORM, tipo_servicio: form.tipo_servicio })
       fileRef.current.value = ''
       fetchMedia()
     } catch (err) {
@@ -187,6 +211,73 @@ export default function AdminPage() {
                 />
               </div>
             </div>
+            {isParquetCat && (
+              <div style={{ background: '#faf6f0', padding: '18px 20px', borderRadius: 12, border: '1px solid #ede0cc' }}>
+                <p style={{ margin: '0 0 14px', fontSize: '.82rem', fontWeight: 600, color: '#7a5c44', textTransform: 'uppercase', letterSpacing: '.8px' }}>
+                  Ficha técnica
+                </p>
+                <div style={S.formRow}>
+                  <div style={S.formGroup}>
+                    <label style={S.label}>Nombre *</label>
+                    <input type="text" placeholder="Roble Marrón" required={isParquetCat}
+                      value={form.nombre} onChange={e => setForm(f => ({ ...f, nombre: e.target.value }))}
+                      style={S.input} />
+                  </div>
+                  <div style={S.formGroup}>
+                    <label style={S.label}>SKU *</label>
+                    <input type="text" placeholder="DOL61028" required={isParquetCat}
+                      value={form.sku} onChange={e => setForm(f => ({ ...f, sku: e.target.value }))}
+                      style={S.input} />
+                  </div>
+                </div>
+                <div style={S.formRow}>
+                  <div style={S.formGroup}>
+                    <label style={S.label}>Colección</label>
+                    <input type="text" value={form.coleccion} onChange={e => setForm(f => ({ ...f, coleccion: e.target.value }))} style={S.input} />
+                  </div>
+                  <div style={S.formGroup}>
+                    <label style={S.label}>Formato</label>
+                    <input type="text" value={form.formato} onChange={e => setForm(f => ({ ...f, formato: e.target.value }))} style={S.input} />
+                  </div>
+                </div>
+                <div style={S.formRow}>
+                  <div style={S.formGroup}>
+                    <label style={S.label}>Formato de búsqueda</label>
+                    <input type="text" value={form.formato_busqueda} onChange={e => setForm(f => ({ ...f, formato_busqueda: e.target.value }))} style={S.input} />
+                  </div>
+                  <div style={S.formGroup}>
+                    <label style={S.label}>Stock</label>
+                    <input type="text" value={form.stock} onChange={e => setForm(f => ({ ...f, stock: e.target.value }))} style={S.input} />
+                  </div>
+                </div>
+                <div style={S.formGroup}>
+                  <label style={S.label}>Uso</label>
+                  <input type="text" value={form.uso} onChange={e => setForm(f => ({ ...f, uso: e.target.value }))} style={S.input} />
+                </div>
+                <div style={S.formGroup}>
+                  <label style={S.label}>Sector</label>
+                  <input type="text" value={form.sector} onChange={e => setForm(f => ({ ...f, sector: e.target.value }))} style={S.input} />
+                </div>
+                <div style={S.formGroup}>
+                  <label style={S.label}>Packaging</label>
+                  <input type="text" value={form.packaging} onChange={e => setForm(f => ({ ...f, packaging: e.target.value }))} style={S.input} />
+                </div>
+                <div style={S.formRow}>
+                  <div style={S.formGroup}>
+                    <label style={S.label}>Anclaje</label>
+                    <input type="text" value={form.anclaje} onChange={e => setForm(f => ({ ...f, anclaje: e.target.value }))} style={S.input} />
+                  </div>
+                  <div style={S.formGroup}>
+                    <label style={S.label}>Un. venta</label>
+                    <input type="text" value={form.un_venta} onChange={e => setForm(f => ({ ...f, un_venta: e.target.value }))} style={S.input} />
+                  </div>
+                  <div style={S.formGroup}>
+                    <label style={S.label}>Bisel</label>
+                    <input type="text" value={form.bisel} onChange={e => setForm(f => ({ ...f, bisel: e.target.value }))} style={S.input} />
+                  </div>
+                </div>
+              </div>
+            )}
             <div style={S.formGroup}>
               <label style={S.label}>Archivo (foto o vídeo) *</label>
               <input
