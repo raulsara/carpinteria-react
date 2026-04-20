@@ -6,49 +6,32 @@ export async function POST(req) {
   const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY
                              || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
-  const formData      = await req.formData()
-  const file          = formData.get('file')
-  const path          = formData.get('path')
-  const tipo_servicio = formData.get('tipo_servicio')
-  const tipo_media    = formData.get('tipo_media')
-  const titulo        = formData.get('titulo')
+  const { action, path, tipo_servicio, tipo_media, titulo } = await req.json()
 
-  const buffer = Buffer.from(await file.arrayBuffer())
+  const admin = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY, {
+    auth: { persistSession: false },
+  })
 
-  const uploadRes = await fetch(
-    `${SUPABASE_URL}/storage/v1/object/media/${path}`,
-    {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${SUPABASE_SERVICE_KEY}`,
-        'apikey': SUPABASE_SERVICE_KEY,
-        'Content-Type': file.type,
-        'x-upsert': 'true',
-      },
-      body: buffer,
-    }
-  )
-
-  if (!uploadRes.ok) {
-    const errBody = await uploadRes.text()
-    return NextResponse.json(
-      { error: `[STORAGE ${uploadRes.status}] ${errBody}` },
-      { status: 500 }
-    )
+  if (action === 'sign') {
+    const { data, error } = await admin.storage
+      .from('media')
+      .createSignedUploadUrl(path)
+    if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+    return NextResponse.json({ token: data.token, path: data.path })
   }
 
-  const publicUrl = `${SUPABASE_URL}/storage/v1/object/public/media/${path}`
+  if (action === 'commit') {
+    const publicUrl = `${SUPABASE_URL}/storage/v1/object/public/media/${path}`
+    const { error } = await admin.from('media').insert([{
+      tipo_servicio,
+      tipo_media,
+      url: publicUrl,
+      titulo: titulo || null,
+      storage_path: path,
+    }])
+    if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+    return NextResponse.json({ url: publicUrl })
+  }
 
-  const db = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY)
-  const { error: dbErr } = await db.from('media').insert([{
-    tipo_servicio,
-    tipo_media,
-    url: publicUrl,
-    titulo: titulo || null,
-    storage_path: path,
-  }])
-
-  if (dbErr) return NextResponse.json({ error: `[DB] ${dbErr.message}` }, { status: 500 })
-
-  return NextResponse.json({ url: publicUrl })
+  return NextResponse.json({ error: 'Unknown action' }, { status: 400 })
 }

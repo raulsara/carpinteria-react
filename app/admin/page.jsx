@@ -50,28 +50,46 @@ export default function AdminPage() {
     if (!form.file || !form.tipo_servicio) return showToast('Selecciona servicio y archivo', true)
 
     setUploading(true)
-    const file = form.file
-    const ext  = file.name.split('.').pop().toLowerCase()
-    const path = `${form.tipo_servicio}/${Date.now()}.${ext}`
+    const file       = form.file
+    const ext        = file.name.split('.').pop().toLowerCase()
+    const path       = `${form.tipo_servicio}/${Date.now()}.${ext}`
     const tipo_media = file.type.startsWith('video') ? 'video' : 'foto'
 
-    const fd = new FormData()
-    fd.append('file', file)
-    fd.append('path', path)
-    fd.append('tipo_servicio', form.tipo_servicio)
-    fd.append('tipo_media', tipo_media)
-    fd.append('titulo', form.titulo || '')
+    try {
+      const signRes = await fetch('/api/upload', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'sign', path }),
+      })
+      const sign = await signRes.json()
+      if (!signRes.ok) throw new Error(sign.error || 'No se pudo firmar')
 
-    const res  = await fetch('/api/upload', { method: 'POST', body: fd })
-    const json = await res.json()
+      const { error: upErr } = await supabase.storage
+        .from('media')
+        .uploadToSignedUrl(sign.path, sign.token, file, { contentType: file.type })
+      if (upErr) throw new Error(upErr.message)
 
-    if (!res.ok) { setUploading(false); return showToast('Error: ' + json.error, true) }
+      const commitRes = await fetch('/api/upload', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'commit',
+          path, tipo_servicio: form.tipo_servicio, tipo_media,
+          titulo: form.titulo || '',
+        }),
+      })
+      const commit = await commitRes.json()
+      if (!commitRes.ok) throw new Error(commit.error || 'No se pudo guardar')
 
-    showToast('✓ Archivo subido correctamente')
-    setForm({ tipo_servicio: form.tipo_servicio, titulo: '', file: null })
-    fileRef.current.value = ''
-    fetchMedia()
-    setUploading(false)
+      showToast('✓ Archivo subido correctamente')
+      setForm({ tipo_servicio: form.tipo_servicio, titulo: '', file: null })
+      fileRef.current.value = ''
+      fetchMedia()
+    } catch (err) {
+      showToast('Error: ' + err.message, true)
+    } finally {
+      setUploading(false)
+    }
   }
 
   async function handleDelete(item) {
