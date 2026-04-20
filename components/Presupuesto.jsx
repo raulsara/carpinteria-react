@@ -86,7 +86,7 @@ export default function Presupuesto() {
               { icon: '📍', title: 'Taller',   text: 'Paseo La Palma, 35' },
               { icon: '📞', title: 'Teléfono', text: '+34 607 826 072' },
               { icon: '✉️', title: 'Email',    text: 'info@maderarte.es' },
-              { icon: '🕐', title: 'Horario',  text: 'Lun–Vie: 8:00–18:00 · Sáb: 9:00–13:00' },
+              { icon: '🕐', title: 'Horario',  text: 'Lun–Vie: 8:00–18:00' },
             ].map(item => (
               <div key={item.title} className="contact-item">
                 <div className="contact-item-icon">{item.icon}</div>
