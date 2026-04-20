@@ -5,7 +5,9 @@ export default function About() {
     <section id="nosotros" style={{ background: 'var(--cream)', padding: '96px 6%' }}>
       <div className="about-wrap">
         <Reveal className="about-visual">
-          <div className="about-img-main">🪵</div>
+          <div className="about-img-main">
+            <img src="/taller.jpg" alt="Taller de carpintería MaderArte" />
+          </div>
           <div className="about-badge-float">
             <strong>35</strong>
             <span>años de oficio</span>
