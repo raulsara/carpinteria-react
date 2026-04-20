@@ -51,7 +51,7 @@ export default function PuertasPage() {
   return (
     <main className="subpage">
       <div className="subpage-head">
-        <Link href="/" className="subpage-back">← Volver al inicio</Link>
+        <Link href="/" className="subpage-back">Volver al inicio</Link>
         <span className="section-tag">Catálogo</span>
         <h1 className="section-title">Puertas y ventanas</h1>
         <p className="section-sub">Elige la categoría para ver los modelos disponibles.</p>
