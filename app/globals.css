@@ -738,6 +738,7 @@ footer { background: var(--brown-dark); }
   max-width: 900px; margin: 0 auto 48px;
   text-align: center;
 }
+.subpage-head .section-sub { margin: 0 auto; }
 .cat-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
