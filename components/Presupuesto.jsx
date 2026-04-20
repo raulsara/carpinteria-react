@@ -86,8 +86,11 @@ export default function Presupuesto() {
 
     // Abrir WhatsApp con los datos
     const est = showEstimate ? `${estimMin.toLocaleString('es-ES')} € – ${estimMax.toLocaleString('es-ES')} €` : ''
+    const saludo = form.telefono
+      ? `Hola, estaría interesado en solicitar un presupuesto, por favor, contacten conmigo en el teléfono ${form.telefono}`
+      : 'Hola, estaría interesado en solicitar un presupuesto, por favor, contacten conmigo'
     const msg = [
-      '¡Hola MaderArte! Quiero solicitar un presupuesto:',
+      saludo,
       '',
       `📋 *Proyecto:* ${TIPO_LABELS[form.tipo] || form.tipo}`,
       form.material ? `🪵 *Material:* ${form.material}` : '',
@@ -97,7 +100,6 @@ export default function Presupuesto() {
       form.descripcion ? `📝 *Detalles:* ${form.descripcion}` : '',
       '',
       `👤 *Nombre:* ${form.nombre}`,
-      form.telefono ? `📞 *Teléfono:* ${form.telefono}` : '',
       `✉️ *Email:* ${form.email}`,
     ].filter(Boolean).join('\n')
 
