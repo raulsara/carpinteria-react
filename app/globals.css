@@ -730,7 +730,7 @@ footer { background: var(--brown-dark); }
 /* ── SUBPAGES (Puertas catálogo) ── */
 .subpage {
   min-height: 100vh;
-  padding: 72px 6% 96px;
+  padding: 120px 6% 96px;
   background: var(--cream);
   font-family: 'Inter', sans-serif;
 }
