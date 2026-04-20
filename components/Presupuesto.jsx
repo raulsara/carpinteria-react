@@ -56,14 +56,14 @@ export default function Presupuesto() {
     }
 
     const msg = [
-      'Hola, me gustaría recibir un presupuesto para el siguiente proyecto:',
+      '¡Hola! Me gustaría recibir un presupuesto para el siguiente proyecto:',
       '',
-      `📋 *Proyecto:* ${TIPO_LABELS[form.tipo] || form.tipo}`,
-      form.descripcion ? `📝 *Detalles:* ${form.descripcion}` : '',
+      `*Proyecto:* ${TIPO_LABELS[form.tipo] || form.tipo}`,
+      form.descripcion ? `*Detalles:* ${form.descripcion}` : '',
       '',
-      `👤 *Nombre:* ${form.nombre}`,
-      form.telefono ? `📞 *Teléfono:* ${form.telefono}` : '',
-      `✉️ *Email:* ${form.email}`,
+      `*Nombre:* ${form.nombre}`,
+      `*Teléfono:* ${form.telefono}`,
+      `*Email:* ${form.email}`,
     ].filter(Boolean).join('\n')
 
     window.open(`https://wa.me/34607826072?text=${encodeURIComponent(msg)}`, '_blank')

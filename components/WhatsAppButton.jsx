@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react'
 
 const PHONE = '34607826072'
-const MSG   = 'Hola! Me gustaría pedir información'
+const MSG   = '¡Hola! Me gustaría recibir un presupuesto para el siguiente proyecto:'
 
 export default function WhatsAppButton() {
   const [open, setOpen]     = useState(false)
