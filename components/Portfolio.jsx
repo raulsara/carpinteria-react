@@ -54,7 +54,7 @@ export default function Portfolio() {
   return (
     <section id="portfolio">
       <Reveal className="portfolio-header">
-        <span className="section-tag">Portfolio</span>
+        <span className="section-tag">Galería</span>
         <h2 className="section-title">Trabajos que hablan por sí solos</h2>
         <p className="section-sub">Una selección de proyectos recientes en distintas especialidades.</p>
       </Reveal>

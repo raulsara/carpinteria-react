@@ -19,7 +19,7 @@ export default function Footer() {
           <h5>Empresa</h5>
           <ul>
             <li><a href="#nosotros">Sobre nosotros</a></li>
-            <li><a href="#portfolio">Portfolio</a></li>
+            <li><a href="#portfolio">Galería</a></li>
             <li><a href="#proceso">Cómo trabajamos</a></li>
             <li><a href="#testimonios">Clientes</a></li>
           </ul>
