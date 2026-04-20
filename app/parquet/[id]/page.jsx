@@ -48,7 +48,7 @@ export default function ParquetFicha({ params }) {
   const specs = SPEC_LABELS.filter(([k]) => item[k])
 
   return (
-    <main className="subpage">
+    <main className="subpage subpage-ficha">
       <div className="ficha-wrap">
         <div className="ficha-img">
           {item.tipo_media === 'video'
