@@ -101,7 +101,7 @@ export default function Presupuesto() {
       `✉️ *Email:* ${form.email}`,
     ].filter(Boolean).join('\n')
 
-    window.open(`https://wa.me/34612345678?text=${encodeURIComponent(msg)}`, '_blank')
+    window.open(`https://wa.me/34607826072?text=${encodeURIComponent(msg)}`, '_blank')
 
     setToast('✓ ¡Solicitud guardada y enviada!')
     setTimeout(() => setToast(''), 4000)
@@ -123,7 +123,7 @@ export default function Presupuesto() {
           <div className="contact-items">
             {[
               { icon: '📍', title: 'Taller',   text: 'Paseo La Palma, 35' },
-              { icon: '📞', title: 'Teléfono', text: '+34 612 345 678' },
+              { icon: '📞', title: 'Teléfono', text: '+34 607 826 072' },
               { icon: '✉️', title: 'Email',    text: 'info@maderarte.es' },
               { icon: '🕐', title: 'Horario',  text: 'Lun–Vie: 8:00–18:00 · Sáb: 9:00–13:00' },
             ].map(item => (
