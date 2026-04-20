@@ -36,7 +36,10 @@ export default function Portfolio() {
   const [lightbox, setLightbox] = useState(null)
 
   useEffect(() => {
-    supabase.from('media').select('*').order('created_at', { ascending: false })
+    supabase.from('media')
+      .select('*')
+      .neq('tipo_servicio', 'parquet_catalogo')
+      .order('created_at', { ascending: false })
       .then(({ data }) => {
         setMedia(data || [])
         setLoading(false)
@@ -45,7 +48,6 @@ export default function Portfolio() {
 
   const matchCat = (m, key) => m.tipo_servicio === key
     || (key === 'puertas' && m.tipo_servicio?.startsWith('puertas_'))
-    || (key === 'parquet' && m.tipo_servicio === 'parquet_catalogo')
 
   const filtered = active === 'all'
     ? media
