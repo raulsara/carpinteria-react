@@ -2,7 +2,6 @@
 import { useState, useEffect } from 'react'
 
 const PHONE = '34607826072'
-const MSG   = '¡Hola! Me gustaría recibir un presupuesto para el siguiente proyecto:'
 
 export default function WhatsAppButton() {
   const [open, setOpen]     = useState(false)
@@ -13,7 +12,7 @@ export default function WhatsAppButton() {
     return () => clearTimeout(t)
   }, [])
 
-  const chatUrl = `https://wa.me/${PHONE}?text=${encodeURIComponent(MSG)}`
+  const chatUrl = `https://wa.me/${PHONE}`
 
   return (
     <>
