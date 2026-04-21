@@ -20,13 +20,16 @@ export default function Footer() {
             </a>
           </div>
         </div>
-        <div className="footer-col">
+        <div className="footer-col footer-col-tight">
           <h5>Servicios</h5>
           <ul>
-            <li><a href="#servicios">Muebles a medida</a></li>
+            <li><a href="/parquet">Instalación de parquet</a></li>
+            <li><a href="/puertas">Puertas y ventanas</a></li>
             <li><a href="#servicios">Cocinas integrales</a></li>
-            <li><a href="#servicios">Puertas y ventanas</a></li>
-            <li><a href="#servicios">Terrazas</a></li>
+            <li><a href="#servicios">Terrazas y exteriores</a></li>
+            <li><a href="#servicios">Muebles a medida</a></li>
+            <li><a href="#servicios">Estructuras de madera</a></li>
+            <li><a href="#servicios">Restauración</a></li>
           </ul>
         </div>
         <div className="footer-col">
