@@ -141,7 +141,12 @@ export default function Presupuesto() {
             </div>
 
           <button type="submit" className="form-submit-wa" disabled={loading}>
-            {loading ? 'Enviando...' : 'Enviar por WhatsApp 💬'}
+            {loading ? 'Enviando...' : (
+              <>
+                Enviar por WhatsApp
+                <img src="/whatsapp.png" alt="" width="22" height="22" style={{ verticalAlign: 'middle', marginLeft: 8 }} />
+              </>
+            )}
           </button>
         </form>
       </Reveal>
