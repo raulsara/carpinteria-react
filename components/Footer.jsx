@@ -53,7 +53,11 @@ export default function Footer() {
       </div>
       <div className="footer-bottom">
         <p>© {new Date().getFullYear()} MaderArte. Todos los derechos reservados.</p>
-        <p>Hecho con ♥ en España</p>
+        <div className="footer-legal">
+          <a href="/aviso-legal">Aviso legal</a>
+          <a href="/politica-privacidad">Política de privacidad</a>
+          <a href="/politica-cookies">Política de cookies</a>
+        </div>
       </div>
     </footer>
   )

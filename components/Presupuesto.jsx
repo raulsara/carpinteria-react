@@ -148,7 +148,10 @@ export default function Presupuesto() {
               onChange={e => setForm(f => ({ ...f, acepta: e.target.checked }))}
             />
             <span>
-              He leído y acepto la información básica sobre protección de datos así como el aviso legal y la política de privacidad y acepto el tratamiento de mis datos para el trámite de la solicitud realizada.
+              He leído y acepto la información básica sobre protección de datos así como{' '}
+              <a href="/aviso-legal" target="_blank" rel="noopener noreferrer">el aviso legal</a>{' '}y la{' '}
+              <a href="/politica-privacidad" target="_blank" rel="noopener noreferrer">política de privacidad</a>{' '}
+              y acepto el tratamiento de mis datos para el trámite de la solicitud realizada.
             </span>
           </label>
 
