@@ -64,8 +64,9 @@ nav {
   text-decoration: none;
   display: inline-flex;
   align-items: center;
+  gap: 12px;
 }
-.nav-logo span { color: var(--brown-light); }
+.nav-logo-text span { color: var(--brown-light); }
 
 .nav-logo-img {
   height: 54px;
@@ -78,6 +79,7 @@ nav {
 }
 @media (max-width: 600px) {
   .nav-logo-img { height: 44px; }
+  .nav-logo-text { font-size: 1.15rem; }
 }
 
 .footer-logo-img {

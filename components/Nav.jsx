@@ -20,7 +20,8 @@ export default function Nav() {
   return (
     <nav id="navbar" style={{ boxShadow: scrolled ? '0 4px 20px rgba(0,0,0,.25)' : 'none' }}>
       <Link href="/" className="nav-logo" onClick={close} aria-label="MaderArte">
-        <img src="/logo.png" alt="MaderArte" className="nav-logo-img" />
+        <img src="/logo.png" alt="" className="nav-logo-img" />
+        <span className="nav-logo-text">Mader<span>Arte</span></span>
       </Link>
       <ul className={`nav-links ${menuOpen ? 'open' : ''}`}>
         <li><Link href="/#nosotros"    onClick={close}>{t('nav.nosotros')}</Link></li>
