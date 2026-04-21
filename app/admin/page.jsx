@@ -1,6 +1,7 @@
 'use client'
 import { useState, useEffect, useRef } from 'react'
 import { supabase } from '../../lib/supabase'
+import BlogAdmin from '../../components/BlogAdmin'
 
 const PASS = 'maderarte2024'
 
@@ -29,6 +30,7 @@ export default function AdminPage() {
   const [uploading, setUploading] = useState(false)
   const [toast, setToast]         = useState('')
   const [filterSrv, setFilterSrv] = useState('all')
+  const [tab, setTab]             = useState('media')
 
   const EMPTY_FORM = {
     tipo_servicio: '', titulo: '', descripcion: '', file: null,
@@ -164,23 +166,51 @@ export default function AdminPage() {
         <nav style={S.nav}>
           <a href="/" style={S.navLink}>← Ver web</a>
         </nav>
-        <div style={S.sidebarSection}>Filtrar por servicio</div>
-        <button onClick={() => setFilterSrv('all')} style={{ ...S.filterBtn, ...(filterSrv === 'all' ? S.filterBtnActive : {}) }}>
-          Todos ({media.length})
+        <div style={S.sidebarSection}>Sección</div>
+        <button onClick={() => setTab('media')}
+          style={{ ...S.filterBtn, ...(tab === 'media' ? S.filterBtnActive : {}) }}>
+          📁 Medios
         </button>
-        {SERVICIOS.map(s => {
-          const count = media.filter(m => m.tipo_servicio === s.key).length
-          return (
-            <button key={s.key} onClick={() => setFilterSrv(s.key)}
-              style={{ ...S.filterBtn, ...(filterSrv === s.key ? S.filterBtnActive : {}) }}>
-              {s.label} ({count})
+        <button onClick={() => setTab('blog')}
+          style={{ ...S.filterBtn, ...(tab === 'blog' ? S.filterBtnActive : {}) }}>
+          📝 Blog
+        </button>
+
+        {tab === 'media' && (
+          <>
+            <div style={S.sidebarSection}>Filtrar por servicio</div>
+            <button onClick={() => setFilterSrv('all')} style={{ ...S.filterBtn, ...(filterSrv === 'all' ? S.filterBtnActive : {}) }}>
+              Todos ({media.length})
             </button>
-          )
-        })}
+            {SERVICIOS.map(s => {
+              const count = media.filter(m => m.tipo_servicio === s.key).length
+              return (
+                <button key={s.key} onClick={() => setFilterSrv(s.key)}
+                  style={{ ...S.filterBtn, ...(filterSrv === s.key ? S.filterBtnActive : {}) }}>
+                  {s.label} ({count})
+                </button>
+              )
+            })}
+          </>
+        )}
       </aside>
 
       {/* MAIN */}
       <main style={S.main}>
+        {tab === 'blog' ? (
+          <>
+            <div style={S.header}>
+              <h1 style={S.pageTitle}>Blog</h1>
+            </div>
+            <BlogAdmin onToast={showToast} />
+            {toast && (
+              <div style={{ ...S.toast, background: toast.isErr ? '#c0392b' : '#27ae60' }}>
+                {toast.msg}
+              </div>
+            )}
+          </>
+        ) : (
+          <>
         <div style={S.header}>
           <h1 style={S.pageTitle}>Gestión de medios</h1>
           <span style={S.badge}>{media.length} archivos</span>
@@ -351,9 +381,11 @@ export default function AdminPage() {
             </div>
           )}
         </div>
+          </>
+        )}
       </main>
 
-      {toast && (
+      {tab === 'media' && toast && (
         <div style={{ ...S.toast, background: toast.isErr ? '#c0392b' : '#27ae60' }}>
           {toast.msg}
         </div>

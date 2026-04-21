@@ -21,6 +21,7 @@ export default function Nav() {
         <li><Link href="/#nosotros"    onClick={close}>Quiénes somos</Link></li>
         <li><Link href="/#servicios"   onClick={close}>Servicios</Link></li>
         <li><Link href="/#portfolio"   onClick={close}>Galería</Link></li>
+        <li><Link href="/blog"         onClick={close}>Blog</Link></li>
         <li><Link href="/#proceso"     onClick={close}>Proceso</Link></li>
         <li><Link href="/#testimonios" onClick={close}>Clientes</Link></li>
         <li><Link href="/#contacto"    onClick={close}>Contacto</Link></li>
