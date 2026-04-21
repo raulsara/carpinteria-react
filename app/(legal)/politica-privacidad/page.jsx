@@ -11,8 +11,8 @@ export default function PoliticaPrivacidad() {
 
         <h2>1. Responsable del tratamiento</h2>
         <ul>
-          <li><strong>Titular:</strong> MaderArte <span className="legal-tbd">[razón social / nombre del autónomo — pendiente de completar]</span></li>
-          <li><strong>NIF/CIF:</strong> <span className="legal-tbd">[pendiente de completar]</span></li>
+          <li><strong>Titular:</strong> Martínez Delgado, Salud (MaderArte)</li>
+          <li><strong>NIF:</strong> 38551322X</li>
           <li><strong>Domicilio:</strong> Paseo La Palma, 35 — Barcelona</li>
           <li><strong>Correo electrónico:</strong> info@maderarte.es</li>
           <li><strong>Teléfono:</strong> +34 607 826 072</li>
