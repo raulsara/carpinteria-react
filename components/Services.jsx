@@ -112,6 +112,7 @@ function ServiceCard({ s, viewCatalogLabel }) {
 
   const body = (
     <>
+      {s.badge && <span className="service-badge">✦ {s.badge}</span>}
       <div className="service-icon"><s.Icon /></div>
       <h3>{s.title}</h3>
       <p>{s.desc}</p>
@@ -119,16 +120,19 @@ function ServiceCard({ s, viewCatalogLabel }) {
     </>
   )
 
+  const cls = `reveal service-card${s.featured ? ' service-card-featured' : ''}${s.href ? ' service-card-link' : ''}`
+
   return s.href ? (
-    <Link ref={ref} href={s.href} className="reveal service-card service-card-link">{body}</Link>
+    <Link ref={ref} href={s.href} className={cls}>{body}</Link>
   ) : (
-    <div ref={ref} className="reveal service-card">{body}</div>
+    <div ref={ref} className={cls}>{body}</div>
   )
 }
 
 export default function Services() {
   const { t } = useLang()
   const SERVICES = [
+    { Icon: IconReformas,     title: t('services.reformas'),     desc: t('services.reformasDesc'),     featured: true, badge: t('services.reformasBadge') },
     { Icon: IconParquet,      title: t('services.parquet'),      desc: t('services.parquetDesc'),      href: '/parquet' },
     { Icon: IconPuertas,      title: t('services.puertas'),      desc: t('services.puertasDesc'),      href: '/puertas' },
     { Icon: IconCocinas,      title: t('services.cocinas'),      desc: t('services.cocinasDesc') },
@@ -136,7 +140,6 @@ export default function Services() {
     { Icon: IconMuebles,      title: t('services.muebles'),      desc: t('services.mueblesDesc') },
     { Icon: IconEstructuras,  title: t('services.estructuras'),  desc: t('services.estructurasDesc') },
     { Icon: IconRestauracion, title: t('services.restauracion'), desc: t('services.restauracionDesc') },
-    { Icon: IconReformas,     title: t('services.reformas'),     desc: t('services.reformasDesc') },
   ]
   return (
     <section id="servicios">
