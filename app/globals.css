@@ -596,6 +596,24 @@ footer { background: var(--brown-dark); }
 .footer-brand .nav-logo { display: block; margin-bottom: 14px; font-size: 1.4rem; }
 .footer-brand p { color: rgba(245,239,230,.5); font-size: .88rem; line-height: 1.7; }
 
+.footer-social {
+  display: flex; gap: 12px;
+  margin-top: 20px;
+}
+.footer-social a {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: rgba(245,239,230,.08);
+  display: flex; align-items: center; justify-content: center;
+  color: rgba(245,239,230,.7);
+  transition: background .2s, color .2s, transform .2s;
+}
+.footer-social a:hover {
+  background: var(--brown-light);
+  color: #fff;
+  transform: translateY(-2px);
+}
+
 .footer-col h5 { color: var(--cream); font-size: .82rem; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 18px; }
 .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
 .footer-col a { color: rgba(245,239,230,.55); text-decoration: none; font-size: .88rem; transition: color .2s; }
