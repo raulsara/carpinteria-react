@@ -32,7 +32,7 @@ export default function Footer() {
         <div className="footer-col">
           <h5>Empresa</h5>
           <ul>
-            <li><a href="#nosotros">Sobre nosotros</a></li>
+            <li><a href="#nosotros">Quiénes somos</a></li>
             <li><a href="#portfolio">Galería</a></li>
             <li><a href="#proceso">Cómo trabajamos</a></li>
             <li><a href="#testimonios">Clientes</a></li>

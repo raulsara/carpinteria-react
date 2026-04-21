@@ -14,7 +14,7 @@ export default function About() {
           </div>
         </Reveal>
         <Reveal className="about-text">
-          <span className="section-tag">Nosotros</span>
+          <span className="section-tag">Quiénes somos</span>
           <h2 className="section-title">Pasión por la madera desde 1991</h2>
           <p>Somos un taller familiar con más de 35 años de experiencia en carpintería artesanal. Combinamos técnicas tradicionales con herramientas modernas para garantizar resultados perfectos.</p>
           <p>Cada pieza que fabricamos lleva el sello de nuestra dedicación: materiales seleccionados, acabados impecables y plazos de entrega cumplidos.</p>
