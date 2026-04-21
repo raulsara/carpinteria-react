@@ -55,9 +55,17 @@ export default function BlogPost({ params }) {
           {renderMarkdown(post.contenido)}
         </div>
 
-        <footer className="post-footer">
-          <Link href="/blog" className="post-back">← Ver todos los artículos</Link>
-          <Link href="/#presupuesto" className="btn-primary">Pedir presupuesto</Link>
+        <footer className="post-footer post-footer-cta">
+          <p className="post-footer-text">Si tienes alguna consulta, no dudes en contactar con nosotros.</p>
+          <a
+            href="https://wa.me/34607826072"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="post-footer-wa"
+          >
+            <img src="/whatsapp.png" alt="" width="26" height="26" />
+            Chat WhatsApp
+          </a>
         </footer>
       </article>
     </main>
