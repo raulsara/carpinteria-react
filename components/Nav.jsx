@@ -18,8 +18,8 @@ export default function Nav() {
     <nav id="navbar" style={{ boxShadow: scrolled ? '0 4px 20px rgba(0,0,0,.25)' : 'none' }}>
       <Link href="/" className="nav-logo" onClick={close}>Mader<span>Arte</span></Link>
       <ul className={`nav-links ${menuOpen ? 'open' : ''}`}>
-        <li><Link href="/#servicios"   onClick={close}>Servicios</Link></li>
         <li><Link href="/#nosotros"    onClick={close}>Nosotros</Link></li>
+        <li><Link href="/#servicios"   onClick={close}>Servicios</Link></li>
         <li><Link href="/#portfolio"   onClick={close}>Galería</Link></li>
         <li><Link href="/#proceso"     onClick={close}>Proceso</Link></li>
         <li><Link href="/#testimonios" onClick={close}>Clientes</Link></li>
