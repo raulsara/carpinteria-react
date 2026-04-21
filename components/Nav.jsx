@@ -23,7 +23,8 @@ export default function Nav() {
         <li><Link href="/#portfolio"   onClick={close}>Galería</Link></li>
         <li><Link href="/#proceso"     onClick={close}>Proceso</Link></li>
         <li><Link href="/#testimonios" onClick={close}>Clientes</Link></li>
-        <li><Link href="/#contacto" className="nav-cta" onClick={close}>Presupuesto</Link></li>
+        <li><Link href="/#contacto"    onClick={close}>Contacto</Link></li>
+        <li><Link href="/#presupuesto" className="nav-cta" onClick={close}>Presupuesto</Link></li>
       </ul>
       <button className="hamburger" onClick={() => setMenuOpen(o => !o)} aria-label="Menú">
         <span /><span /><span />

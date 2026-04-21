@@ -41,7 +41,8 @@ export default function Footer() {
         <div className="footer-col">
           <h5>Contacto</h5>
           <ul>
-            <li><a href="#contacto">Pedir presupuesto</a></li>
+            <li><a href="#presupuesto">Pedir presupuesto</a></li>
+            <li><a href="#contacto">Contacto</a></li>
             <li><a href="tel:+34607826072">+34 607 826 072</a></li>
             <li><a href="mailto:info@maderarte.es">info@maderarte.es</a></li>
           </ul>

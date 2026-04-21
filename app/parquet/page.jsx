@@ -43,7 +43,7 @@ export default function ParquetPage() {
       ) : items.length === 0 ? (
         <div className="portfolio-empty">
           <p>Estamos preparando el catálogo de parquets.</p>
-          <Link href="/#contacto" className="btn-primary" style={{ marginTop: 20, display: 'inline-block' }}>
+          <Link href="/#presupuesto" className="btn-primary" style={{ marginTop: 20, display: 'inline-block' }}>
             Consultar directamente
           </Link>
         </div>

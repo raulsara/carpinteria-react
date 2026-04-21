@@ -69,7 +69,7 @@ export default function ParquetFicha({ params }) {
               </div>
             ))}
           </dl>
-          <Link href="/#contacto" className="btn-primary" style={{ marginTop: 32, display: 'inline-block' }}>
+          <Link href="/#presupuesto" className="btn-primary" style={{ marginTop: 32, display: 'inline-block' }}>
             Pedir presupuesto
           </Link>
         </div>

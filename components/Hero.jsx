@@ -8,7 +8,7 @@ export default function Hero() {
         <h1>Madera que cuenta<br /><em>historias eternas</em></h1>
         <p>Creamos muebles, puertas y espacios de madera hechos a medida con precisión artesanal y materiales de primera calidad.</p>
         <div className="hero-btns">
-          <a href="#contacto" className="btn-primary">Solicitar presupuesto</a>
+          <a href="#presupuesto" className="btn-primary">Solicitar presupuesto</a>
           <a href="#portfolio" className="btn-outline">Ver trabajos</a>
         </div>
         <div className="hero-stats">
