@@ -478,7 +478,13 @@ section { padding: 96px 6%; }
   font-size: 1.6rem;
   margin-bottom: 10px;
 }
-.contact-card-icon-wa { background: #25D366; }
+.contact-card-icon-wa {
+  background: transparent;
+  padding: 0;
+  overflow: hidden;
+  border-radius: 14px;
+}
+.contact-card-icon-wa img { width: 100%; height: 100%; object-fit: contain; display: block; }
 .contact-card h5 {
   font-size: .72rem;
   color: var(--text-muted);
@@ -747,11 +753,11 @@ footer { background: var(--brown-dark); }
   display: flex; align-items: center; gap: 12px;
 }
 .wa-popup-avatar {
-  width: 42px; height: 42px; border-radius: 50%;
-  background: #25D366;
-  display: flex; align-items: center; justify-content: center;
+  width: 42px; height: 42px; border-radius: 10px;
+  overflow: hidden;
   flex-shrink: 0;
 }
+.wa-popup-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .wa-popup-name   { margin: 0; font-weight: 600; font-size: .95rem; font-family: 'Playfair Display', serif; }
 .wa-popup-status { margin: 2px 0 0; font-size: .72rem; opacity: .8; }
 .wa-popup-close  {
