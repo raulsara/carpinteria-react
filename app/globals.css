@@ -21,6 +21,31 @@ body {
   line-height: 1.6;
 }
 
+/* ── LANG SWITCH ── */
+.lang-switch {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: .78rem; font-weight: 600;
+  letter-spacing: .5px;
+}
+.lang-btn {
+  background: transparent; border: none; cursor: pointer;
+  color: rgba(245,239,230,.55);
+  padding: 4px 8px; border-radius: 6px;
+  transition: color .2s, background .2s;
+  font-weight: 600;
+  font-family: inherit;
+}
+.lang-btn:hover { color: var(--cream); }
+.lang-btn.active { color: var(--brown-light); }
+.lang-sep { color: rgba(245,239,230,.3); }
+
+.nav-mobile-right { display: none; align-items: center; gap: 14px; }
+
+@media (max-width: 900px) {
+  .nav-mobile-right { display: flex; }
+  .nav-lang-li { display: none; }
+}
+
 /* ── NAV ── */
 nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 100;

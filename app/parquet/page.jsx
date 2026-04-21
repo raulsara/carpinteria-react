@@ -2,8 +2,10 @@
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { supabase } from '../../lib/supabase'
+import { useLang } from '../../lib/i18n'
 
 export default function ParquetPage() {
+  const { t } = useLang()
   const [items, setItems]     = useState([])
   const [loading, setLoading] = useState(true)
   const [page, setPage]       = useState(0)
@@ -22,35 +24,30 @@ export default function ParquetPage() {
   }, [])
 
   const totalPages = Math.max(1, Math.ceil(items.length / PER_PAGE))
-
-  function go(dir) {
-    const next = (page + dir + totalPages) % totalPages
-    setPage(next)
-  }
-
+  function go(dir) { setPage((page + dir + totalPages) % totalPages) }
   const visible = items.slice(page * PER_PAGE, page * PER_PAGE + PER_PAGE)
 
   return (
     <main className="subpage">
       <div className="subpage-head">
-        <span className="section-tag">Catálogo</span>
-        <h1 className="section-title">Catálogo suelos de parquet</h1>
-        <p className="section-sub">Macizo, laminado y multicapa. Elige el acabado que mejor encaje con tu espacio.</p>
+        <span className="section-tag">{t('parquet.tag')}</span>
+        <h1 className="section-title">{t('parquet.title')}</h1>
+        <p className="section-sub">{t('parquet.subtitle')}</p>
       </div>
 
       {loading ? (
-        <p className="portfolio-empty">Cargando catálogo...</p>
+        <p className="portfolio-empty">{t('parquet.loading')}</p>
       ) : items.length === 0 ? (
         <div className="portfolio-empty">
-          <p>Estamos preparando el catálogo de parquets.</p>
+          <p>{t('parquet.empty')}</p>
           <Link href="/#presupuesto" className="btn-primary" style={{ marginTop: 20, display: 'inline-block' }}>
-            Consultar directamente
+            {t('parquet.consult')}
           </Link>
         </div>
       ) : (
         <div className="carousel-wrap">
           {totalPages > 1 && (
-            <button className="carousel-arrow carousel-prev" onClick={() => go(-1)} aria-label="Anterior">‹</button>
+            <button className="carousel-arrow carousel-prev" onClick={() => go(-1)} aria-label="‹">‹</button>
           )}
           <div className="carousel-track">
             {visible.map(item => (
@@ -70,24 +67,17 @@ export default function ParquetPage() {
             ))}
           </div>
           {totalPages > 1 && (
-            <button className="carousel-arrow carousel-next" onClick={() => go(1)} aria-label="Siguiente">›</button>
+            <button className="carousel-arrow carousel-next" onClick={() => go(1)} aria-label="›">›</button>
           )}
-
           {totalPages > 1 && (
             <div className="carousel-dots">
               {Array.from({ length: totalPages }).map((_, i) => (
-                <button
-                  key={i}
-                  className={`carousel-dot ${i === page ? 'active' : ''}`}
-                  onClick={() => setPage(i)}
-                  aria-label={`Página ${i + 1}`}
-                />
+                <button key={i} className={`carousel-dot ${i === page ? 'active' : ''}`} onClick={() => setPage(i)} aria-label={`${i + 1}`} />
               ))}
             </div>
           )}
         </div>
       )}
-
     </main>
   )
 }

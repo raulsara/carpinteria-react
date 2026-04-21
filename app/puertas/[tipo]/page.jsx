@@ -3,17 +3,19 @@ import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { supabase } from '../../../lib/supabase'
-
-const CATEGORIAS = {
-  interiores: { tipo: 'puertas_interiores', titulo: 'Puertas interiores',   desc: 'Modelos para pasillo, habitación y zonas interiores.' },
-  exteriores: { tipo: 'puertas_exteriores', titulo: 'Puertas exteriores',   desc: 'Puertas de entrada con aislamiento y seguridad.' },
-  vidrio:     { tipo: 'puertas_vidrio',     titulo: 'Puertas con vidrio',   desc: 'Correderas y batientes con cristal templado.' },
-  lacadas:    { tipo: 'puertas_lacadas',    titulo: 'Puertas lacadas',      desc: 'Acabado liso en cualquier color RAL.' },
-}
+import { useLang } from '../../../lib/i18n'
 
 export default function PuertaCategoria({ params }) {
+  const { t } = useLang()
   const slug = params?.tipo
   const router = useRouter()
+
+  const CATEGORIAS = {
+    interiores: { tipo: 'puertas_interiores', titulo: t('puertas.interiores'),   desc: t('puertas.interioresDesc') },
+    exteriores: { tipo: 'puertas_exteriores', titulo: t('puertas.exteriores'),   desc: t('puertas.exterioresDesc') },
+    vidrio:     { tipo: 'puertas_vidrio',     titulo: t('puertas.vidrio'),       desc: t('puertas.vidrioDesc') },
+    lacadas:    { tipo: 'puertas_lacadas',    titulo: t('puertas.lacadas'),      desc: t('puertas.lacadasDesc') },
+  }
   const cat = CATEGORIAS[slug]
 
   const [items, setItems]     = useState([])
@@ -30,14 +32,15 @@ export default function PuertaCategoria({ params }) {
         setItems(data || [])
         setLoading(false)
       })
-  }, [cat])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [slug])
 
   if (!cat) {
     return (
       <main className="subpage">
         <div className="subpage-head">
-          <h1 className="section-title">Categoría no encontrada</h1>
-          <button className="btn-primary" onClick={() => router.push('/puertas')}>Ver categorías</button>
+          <h1 className="section-title">{t('puertas.notFound') || 'Categoría no encontrada'}</h1>
+          <button className="btn-primary" onClick={() => router.push('/puertas')}>{t('puertas.viewCatalog')}</button>
         </div>
       </main>
     )
@@ -47,17 +50,17 @@ export default function PuertaCategoria({ params }) {
     <main className="subpage">
       <div className="subpage-head">
         <span className="section-tag">{cat.titulo}</span>
-        <h1 className="section-title">Catálogo de {cat.titulo.toLowerCase()}</h1>
+        <h1 className="section-title">{t('puertas.catalogOf')(cat.titulo)}</h1>
         <p className="section-sub">{cat.desc}</p>
       </div>
 
       {loading ? (
-        <p className="portfolio-empty">Cargando catálogo...</p>
+        <p className="portfolio-empty">{t('puertas.loading')}</p>
       ) : items.length === 0 ? (
         <div className="portfolio-empty">
-          <p>Estamos preparando el catálogo de esta categoría.</p>
+          <p>{t('puertas.empty')}</p>
           <Link href="/#presupuesto" className="btn-primary" style={{ marginTop: 20, display: 'inline-block' }}>
-            Consultar directamente
+            {t('puertas.consult')}
           </Link>
         </div>
       ) : (

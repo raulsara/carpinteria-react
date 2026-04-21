@@ -2,6 +2,7 @@
 import Link from 'next/link'
 import { useEffect, useRef } from 'react'
 import Reveal from './Reveal'
+import { useLang } from '../lib/i18n'
 
 const stroke = {
   fill: 'none', stroke: 'currentColor', strokeWidth: 2,
@@ -89,17 +90,7 @@ const IconRestauracion = () => (
   </svg>
 )
 
-const SERVICES = [
-  { Icon: IconParquet,      title: 'Instalación de Parquet',  desc: 'Colocación de parquet macizo, laminado y multicapa con acabados perfectos. Lijado, barnizado y restauración de suelos.', href: '/parquet' },
-  { Icon: IconPuertas,      title: 'Puertas y Ventanas',      desc: 'Carpintería exterior e interior en maderas nobles. Fabricación e instalación con sellado perfecto y acabado a medida.', href: '/puertas' },
-  { Icon: IconCocinas,      title: 'Cocinas Integrales',      desc: 'Cocinas completas en madera maciza o lacada, con diseño funcional y estética impecable adaptada a tu espacio.' },
-  { Icon: IconTerraza,      title: 'Terrazas y Exteriores',   desc: 'Pérgolas, tarimas, cerramientos y mobiliario para exterior con maderas tratadas que resisten la intemperie.' },
-  { Icon: IconMuebles,      title: 'Muebles a Medida',        desc: 'Diseñamos y fabricamos muebles personalizados para cada rincón de tu hogar u oficina: armarios, estanterías, mesas y más.' },
-  { Icon: IconEstructuras,  title: 'Estructuras de Madera',   desc: 'Escaleras, techos, forjados y estructuras de madera para proyectos de construcción y reforma integrales.' },
-  { Icon: IconRestauracion, title: 'Restauración',            desc: 'Devolvemos la vida a muebles y estructuras antiguas: lijado, tratamiento, barnizado y reparación de daños.' },
-]
-
-function ServiceCard({ s }) {
+function ServiceCard({ s, viewCatalogLabel }) {
   const ref = useRef(null)
   useEffect(() => {
     const obs = new IntersectionObserver(
@@ -115,31 +106,37 @@ function ServiceCard({ s }) {
       <div className="service-icon"><s.Icon /></div>
       <h3>{s.title}</h3>
       <p>{s.desc}</p>
-      {s.href && <span className="service-link">Ver catálogo →</span>}
+      {s.href && <span className="service-link">{viewCatalogLabel} →</span>}
     </>
   )
 
   return s.href ? (
-    <Link ref={ref} href={s.href} className="reveal service-card service-card-link">
-      {body}
-    </Link>
+    <Link ref={ref} href={s.href} className="reveal service-card service-card-link">{body}</Link>
   ) : (
-    <div ref={ref} className="reveal service-card">
-      {body}
-    </div>
+    <div ref={ref} className="reveal service-card">{body}</div>
   )
 }
 
 export default function Services() {
+  const { t } = useLang()
+  const SERVICES = [
+    { Icon: IconParquet,      title: t('services.parquet'),      desc: t('services.parquetDesc'),      href: '/parquet' },
+    { Icon: IconPuertas,      title: t('services.puertas'),      desc: t('services.puertasDesc'),      href: '/puertas' },
+    { Icon: IconCocinas,      title: t('services.cocinas'),      desc: t('services.cocinasDesc') },
+    { Icon: IconTerraza,      title: t('services.terrazas'),     desc: t('services.terrazasDesc') },
+    { Icon: IconMuebles,      title: t('services.muebles'),      desc: t('services.mueblesDesc') },
+    { Icon: IconEstructuras,  title: t('services.estructuras'),  desc: t('services.estructurasDesc') },
+    { Icon: IconRestauracion, title: t('services.restauracion'), desc: t('services.restauracionDesc') },
+  ]
   return (
     <section id="servicios">
       <Reveal className="services-header">
-        <span className="section-tag">Servicios</span>
-        <h2 className="section-title">Todo en madera, hecho a tu medida</h2>
-        <p className="section-sub">Cada proyecto es único. Trabajamos desde el diseño hasta la instalación final con dedicación total.</p>
+        <span className="section-tag">{t('services.tag')}</span>
+        <h2 className="section-title">{t('services.title')}</h2>
+        <p className="section-sub">{t('services.subtitle')}</p>
       </Reveal>
       <div className="services-grid">
-        {SERVICES.map(s => <ServiceCard key={s.title} s={s} />)}
+        {SERVICES.map(s => <ServiceCard key={s.title} s={s} viewCatalogLabel={t('services.viewCatalog')} />)}
       </div>
     </section>
   )

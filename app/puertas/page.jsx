@@ -2,40 +2,18 @@
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { supabase } from '../../lib/supabase'
-
-const CATEGORIAS = [
-  {
-    slug: 'interiores',
-    tipo: 'puertas_interiores',
-    titulo: 'Puertas interiores',
-    desc:  'Pasillo, habitación, cocina. Maderas nobles y acabados a medida.',
-    img:   '/iconos/interior.png',
-  },
-  {
-    slug: 'exteriores',
-    tipo: 'puertas_exteriores',
-    titulo: 'Puertas exteriores',
-    desc:  'Entrada principal con seguridad y aislamiento. Roble, nogal o castaño.',
-    img:   '/iconos/exterior.png',
-  },
-  {
-    slug: 'vidrio',
-    tipo: 'puertas_vidrio',
-    titulo: 'Puertas con vidrio',
-    desc:  'Correderas y batientes con cristal templado para ganar luz en cualquier estancia.',
-    img:   '/iconos/vidrio.png',
-  },
-  {
-    slug: 'lacadas',
-    tipo: 'puertas_lacadas',
-    titulo: 'Puertas lacadas',
-    desc:  'Acabado liso y moderno en cualquier color RAL. Perfectas para reformas actuales.',
-    img:   '/iconos/lacada.png',
-  },
-]
+import { useLang } from '../../lib/i18n'
 
 export default function PuertasPage() {
+  const { t } = useLang()
   const [counts, setCounts] = useState({})
+
+  const CATEGORIAS = [
+    { slug: 'interiores', tipo: 'puertas_interiores', titulo: t('puertas.interiores'), desc: t('puertas.interioresDesc'), img: '/iconos/interior.png' },
+    { slug: 'exteriores', tipo: 'puertas_exteriores', titulo: t('puertas.exteriores'), desc: t('puertas.exterioresDesc'), img: '/iconos/exterior.png' },
+    { slug: 'vidrio',     tipo: 'puertas_vidrio',     titulo: t('puertas.vidrio'),     desc: t('puertas.vidrioDesc'),     img: '/iconos/vidrio.png' },
+    { slug: 'lacadas',    tipo: 'puertas_lacadas',    titulo: t('puertas.lacadas'),    desc: t('puertas.lacadasDesc'),    img: '/iconos/lacada.png' },
+  ]
 
   useEffect(() => {
     supabase.from('media')
@@ -46,14 +24,15 @@ export default function PuertasPage() {
         ;(data || []).forEach(r => { map[r.tipo_servicio] = (map[r.tipo_servicio] || 0) + 1 })
         setCounts(map)
       })
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
     <main className="subpage">
       <div className="subpage-head">
-        <span className="section-tag">Catálogo</span>
-        <h1 className="section-title">Puertas y ventanas</h1>
-        <p className="section-sub">Elige la categoría para ver los modelos disponibles.</p>
+        <span className="section-tag">{t('puertas.tag')}</span>
+        <h1 className="section-title">{t('puertas.title')}</h1>
+        <p className="section-sub">{t('puertas.subtitle')}</p>
       </div>
 
       <div className="cat-grid">
@@ -65,7 +44,7 @@ export default function PuertasPage() {
             <h3>{c.titulo}</h3>
             <p>{c.desc}</p>
             <span className="cat-count">
-              {counts[c.tipo] ? `${counts[c.tipo]} modelo${counts[c.tipo] > 1 ? 's' : ''}` : 'Ver catálogo'} →
+              {counts[c.tipo] ? t('puertas.models')(counts[c.tipo]) : t('puertas.viewCatalog')} →
             </span>
           </Link>
         ))}

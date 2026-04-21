@@ -2,22 +2,12 @@
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { supabase } from '../../../lib/supabase'
+import { useLang } from '../../../lib/i18n'
 
-const SPEC_LABELS = [
-  ['coleccion',        'Colección'],
-  ['sku',              'SKU'],
-  ['formato',          'Formato'],
-  ['formato_busqueda', 'Formato de búsqueda'],
-  ['stock',            'Stock'],
-  ['uso',              'Uso'],
-  ['sector',           'Sector'],
-  ['packaging',        'Packaging'],
-  ['anclaje',          'Anclaje'],
-  ['un_venta',         'Un. venta'],
-  ['bisel',            'Bisel'],
-]
+const SPEC_KEYS = ['coleccion', 'sku', 'formato', 'formato_busqueda', 'stock', 'uso', 'sector', 'packaging', 'anclaje', 'un_venta', 'bisel']
 
 export default function ParquetFicha({ params }) {
+  const { t } = useLang()
   const id = params?.id
   const [item, setItem]       = useState(null)
   const [loading, setLoading] = useState(true)
@@ -31,21 +21,21 @@ export default function ParquetFicha({ params }) {
       })
   }, [id])
 
-  if (loading) return <main className="subpage"><p className="portfolio-empty">Cargando ficha...</p></main>
+  if (loading) return <main className="subpage"><p className="portfolio-empty">{t('parquet.loadingFicha')}</p></main>
 
   if (!item) {
     return (
       <main className="subpage">
         <div className="portfolio-empty">
-          <p>No se ha encontrado este producto.</p>
-          <Link href="/parquet" className="btn-primary" style={{ marginTop: 20, display: 'inline-block' }}>Ver catálogo</Link>
+          <p>{t('parquet.notFound')}</p>
+          <Link href="/parquet" className="btn-primary" style={{ marginTop: 20, display: 'inline-block' }}>{t('parquet.viewCatalog')}</Link>
         </div>
       </main>
     )
   }
 
   const nombre = item.nombre || item.titulo || 'Parquet'
-  const specs = SPEC_LABELS.filter(([k]) => item[k])
+  const specs = SPEC_KEYS.filter(k => item[k])
 
   return (
     <main className="subpage subpage-ficha">
@@ -60,17 +50,17 @@ export default function ParquetFicha({ params }) {
             {nombre}
             {item.sku && <span className="ficha-sku"> – {item.sku}</span>}
           </h1>
-          <p className="ficha-disclaimer">* hasta fin de existencias</p>
+          <p className="ficha-disclaimer">{t('parquet.disclaimer')}</p>
           <dl className="ficha-specs">
-            {specs.map(([key, label]) => (
+            {specs.map(key => (
               <div key={key} className="ficha-row">
-                <dt>{label}:</dt>
+                <dt>{t(`parquet.specs.${key}`)}:</dt>
                 <dd>{item[key]}</dd>
               </div>
             ))}
           </dl>
           <Link href="/#presupuesto" className="btn-primary" style={{ marginTop: 32, display: 'inline-block' }}>
-            Pedir presupuesto
+            {t('parquet.requestBudget')}
           </Link>
         </div>
       </div>

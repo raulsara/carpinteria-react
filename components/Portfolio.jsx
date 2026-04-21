@@ -2,34 +2,24 @@
 import { useState, useEffect } from 'react'
 import Reveal from './Reveal'
 import { supabase } from '../lib/supabase'
+import { useLang } from '../lib/i18n'
 
-const FILTERS = [
-  { key: 'all',          label: 'Todos' },
-  { key: 'muebles',      label: 'Muebles' },
-  { key: 'cocinas',      label: 'Cocinas' },
-  { key: 'puertas',      label: 'Puertas' },
-  { key: 'exteriores',   label: 'Exteriores' },
-  { key: 'parquet',      label: 'Parquet' },
-  { key: 'restauracion', label: 'Restauración' },
-  { key: 'escaleras',    label: 'Escaleras' },
-]
-
-const SERVICE_LABELS = {
-  muebles:            'Muebles a medida',
-  cocinas:            'Cocinas integrales',
-  puertas:            'Puertas y ventanas',
-  puertas_interiores: 'Puertas interiores',
-  puertas_exteriores: 'Puertas exteriores',
-  puertas_vidrio:     'Puertas con vidrio',
-  puertas_lacadas:    'Puertas lacadas',
-  exteriores:         'Terrazas y exteriores',
-  parquet:            'Instalación de parquet',
-  parquet_catalogo:   'Catálogo de parquet',
-  restauracion:       'Restauración',
-  escaleras:          'Estructuras y escaleras',
+const SERVICE_LABEL_KEYS = {
+  muebles:            'services.muebles',
+  cocinas:            'services.cocinas',
+  puertas:            'services.puertas',
+  puertas_interiores: 'puertas.interiores',
+  puertas_exteriores: 'puertas.exteriores',
+  puertas_vidrio:     'puertas.vidrio',
+  puertas_lacadas:    'puertas.lacadas',
+  exteriores:         'services.terrazas',
+  parquet:            'services.parquet',
+  restauracion:       'services.restauracion',
+  escaleras:          'services.estructuras',
 }
 
 export default function Portfolio() {
+  const { t } = useLang()
   const [active, setActive]     = useState('all')
   const [media, setMedia]       = useState([])
   const [loading, setLoading]   = useState(true)
@@ -49,22 +39,34 @@ export default function Portfolio() {
   const matchCat = (m, key) => m.tipo_servicio === key
     || (key === 'puertas' && m.tipo_servicio?.startsWith('puertas_'))
 
-  const filtered = active === 'all'
-    ? media
-    : media.filter(m => matchCat(m, active))
+  const filtered = active === 'all' ? media : media.filter(m => matchCat(m, active))
+
+  const FILTERS = [
+    { key: 'all',          label: t('portfolio.filters.all') },
+    { key: 'muebles',      label: t('portfolio.filters.muebles') },
+    { key: 'cocinas',      label: t('portfolio.filters.cocinas') },
+    { key: 'puertas',      label: t('portfolio.filters.puertas') },
+    { key: 'exteriores',   label: t('portfolio.filters.exteriores') },
+    { key: 'parquet',      label: t('portfolio.filters.parquet') },
+    { key: 'restauracion', label: t('portfolio.filters.restauracion') },
+    { key: 'escaleras',    label: t('portfolio.filters.escaleras') },
+  ]
+
+  const labelOf = (key) => {
+    const tk = SERVICE_LABEL_KEYS[key]
+    return tk ? t(tk) : key
+  }
 
   return (
     <section id="portfolio">
       <Reveal className="portfolio-header">
-        <span className="section-tag">Galería</span>
-        <h2 className="section-title">Trabajos que hablan por sí solos</h2>
-        <p className="section-sub">Una selección de proyectos recientes en distintas especialidades.</p>
+        <span className="section-tag">{t('portfolio.tag')}</span>
+        <h2 className="section-title">{t('portfolio.title')}</h2>
+        <p className="section-sub">{t('portfolio.subtitle')}</p>
       </Reveal>
       <Reveal className="portfolio-filters">
         {FILTERS.map(f => {
-          const count = f.key === 'all'
-            ? media.length
-            : media.filter(m => matchCat(m, f.key)).length
+          const count = f.key === 'all' ? media.length : media.filter(m => matchCat(m, f.key)).length
           return (
             <button
               key={f.key}
@@ -78,12 +80,10 @@ export default function Portfolio() {
       </Reveal>
 
       {loading ? (
-        <p className="portfolio-empty">Cargando trabajos...</p>
+        <p className="portfolio-empty">{t('portfolio.loading')}</p>
       ) : filtered.length === 0 ? (
         <p className="portfolio-empty">
-          {active === 'all'
-            ? 'Aún no hay trabajos publicados. ¡Vuelve pronto!'
-            : `Aún no tenemos fotos de "${SERVICE_LABELS[active] || active}" publicadas.`}
+          {active === 'all' ? t('portfolio.emptyAll') : t('portfolio.emptyCat')(labelOf(active))}
         </p>
       ) : (
         <div className="portfolio-grid">
@@ -96,9 +96,7 @@ export default function Portfolio() {
                   <img src={item.url} alt={item.titulo || ''} className="portfolio-media" loading="lazy" />
                 )}
               </div>
-              {item.descripcion && (
-                <p className="portfolio-desc">{item.descripcion}</p>
-              )}
+              {item.descripcion && <p className="portfolio-desc">{item.descripcion}</p>}
             </div>
           ))}
         </div>

@@ -1,4 +1,5 @@
 import './globals.css'
+import { LanguageProvider } from '../lib/i18n'
 
 export const metadata = {
   title: 'MaderArte — Carpintería Artesanal',
@@ -15,7 +16,9 @@ export default function RootLayout({ children }) {
           rel="stylesheet"
         />
       </head>
-      <body>{children}</body>
+      <body>
+        <LanguageProvider>{children}</LanguageProvider>
+      </body>
     </html>
   )
 }

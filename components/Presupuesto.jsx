@@ -2,16 +2,12 @@
 import { useState } from 'react'
 import { supabase } from '../lib/supabase'
 import Reveal from './Reveal'
-
-const TIPO_LABELS = {
-  muebles: 'Muebles a medida', cocina: 'Cocina integral',
-  puertas: 'Puertas y ventanas', terraza: 'Terraza / Exterior',
-  parquet: 'Instalación de parquet', restauracion: 'Restauración', otro: 'Otro',
-}
+import { useLang } from '../lib/i18n'
 
 const EMPTY = { tipo: '', nombre: '', telefono: '', email: '', descripcion: '', acepta: false }
 
 export default function Presupuesto() {
+  const { t } = useLang()
   const [form, setForm]       = useState(EMPTY)
   const [errors, setErrors]   = useState({})
   const [loading, setLoading] = useState(false)
@@ -32,6 +28,16 @@ export default function Presupuesto() {
     return Object.keys(errs).length === 0
   }
 
+  const TIPO_LABELS = {
+    muebles: t('presupuesto.tipoMuebles'),
+    cocina: t('presupuesto.tipoCocina'),
+    puertas: t('presupuesto.tipoPuertas'),
+    terraza: t('presupuesto.tipoTerraza'),
+    parquet: t('presupuesto.tipoParquet'),
+    restauracion: t('presupuesto.tipoRestauracion'),
+    otro: t('presupuesto.tipoOtro'),
+  }
+
   async function handleSubmit(e) {
     e.preventDefault()
     if (!validate()) return
@@ -50,26 +56,26 @@ export default function Presupuesto() {
 
     if (error) {
       console.error(error)
-      setToast('Error al guardar. Inténtalo de nuevo.')
+      setToast(t('presupuesto.saveError'))
       setTimeout(() => setToast(''), 4000)
       setLoading(false)
       return
     }
 
     const msg = [
-      '¡Hola! Me gustaría recibir un presupuesto para el siguiente proyecto:',
+      t('presupuesto.greeting'),
       '',
-      `- Proyecto: ${TIPO_LABELS[form.tipo] || form.tipo}`,
-      form.descripcion ? `- Detalles: ${form.descripcion}` : '',
+      `- ${t('presupuesto.lblProyecto')}: ${TIPO_LABELS[form.tipo] || form.tipo}`,
+      form.descripcion ? `- ${t('presupuesto.lblDetalles')}: ${form.descripcion}` : '',
       '',
-      `- Nombre: ${form.nombre}`,
-      `- Teléfono: ${form.telefono}`,
-      `- Email: ${form.email}`,
+      `- ${t('presupuesto.lblNombre')}: ${form.nombre}`,
+      `- ${t('presupuesto.lblTelefono')}: ${form.telefono}`,
+      `- ${t('presupuesto.lblEmail')}: ${form.email}`,
     ].filter(Boolean).join('\n')
 
     window.open(`https://wa.me/34607826072?text=${encodeURIComponent(msg)}`, '_blank')
 
-    setToast('✓ ¡Solicitud guardada y enviada!')
+    setToast(t('presupuesto.savedOk'))
     setTimeout(() => setToast(''), 4000)
     setForm(EMPTY)
     setLoading(false)
@@ -78,68 +84,68 @@ export default function Presupuesto() {
   return (
     <section id="presupuesto">
       <Reveal className="presupuesto-header">
-        <span className="section-tag">Presupuesto</span>
-        <h2 className="section-title">¿Tienes un proyecto en mente?</h2>
-        <p className="section-sub">Cuéntanos tu idea y te enviamos un presupuesto detallado sin ningún compromiso.</p>
+        <span className="section-tag">{t('presupuesto.tag')}</span>
+        <h2 className="section-title">{t('presupuesto.title')}</h2>
+        <p className="section-sub">{t('presupuesto.subtitle')}</p>
       </Reveal>
 
       <Reveal className="contact-form presupuesto-form">
         <form onSubmit={handleSubmit}>
-            <div className="form-group">
-              <label>Tipo de proyecto *</label>
-              <select
-                value={form.tipo}
-                onChange={set('tipo')}
-                className={errors.tipo ? 'field-error' : ''}
-              >
-                <option value="">Selecciona una opción</option>
-                <option value="muebles">Muebles a medida</option>
-                <option value="cocina">Cocina integral</option>
-                <option value="puertas">Puertas y ventanas</option>
-                <option value="terraza">Terraza / Exterior</option>
-                <option value="parquet">Instalación de parquet</option>
-                <option value="restauracion">Restauración</option>
-                <option value="otro">Otro</option>
-              </select>
-            </div>
+          <div className="form-group">
+            <label>{t('presupuesto.tipo')}</label>
+            <select
+              value={form.tipo}
+              onChange={set('tipo')}
+              className={errors.tipo ? 'field-error' : ''}
+            >
+              <option value="">{t('presupuesto.tipoPlaceholder')}</option>
+              <option value="muebles">{t('presupuesto.tipoMuebles')}</option>
+              <option value="cocina">{t('presupuesto.tipoCocina')}</option>
+              <option value="puertas">{t('presupuesto.tipoPuertas')}</option>
+              <option value="terraza">{t('presupuesto.tipoTerraza')}</option>
+              <option value="parquet">{t('presupuesto.tipoParquet')}</option>
+              <option value="restauracion">{t('presupuesto.tipoRestauracion')}</option>
+              <option value="otro">{t('presupuesto.tipoOtro')}</option>
+            </select>
+          </div>
 
-            <div className="form-row">
-              <div className="form-group">
-                <label>Nombre *</label>
-                <input
-                  type="text" placeholder="Tu nombre"
-                  value={form.nombre} onChange={set('nombre')}
-                  className={errors.nombre ? 'field-error' : ''}
-                />
-              </div>
-              <div className="form-group">
-                <label>Teléfono *</label>
-                <input
-                  type="tel" placeholder="+34 600 000 000"
-                  value={form.telefono} onChange={set('telefono')}
-                  className={errors.telefono ? 'field-error' : ''}
-                />
-              </div>
-            </div>
-
+          <div className="form-row">
             <div className="form-group">
-              <label>Email *</label>
+              <label>{t('presupuesto.nombre')}</label>
               <input
-                type="email" placeholder="correo@ejemplo.com"
-                value={form.email} onChange={set('email')}
-                className={errors.email ? 'field-error' : ''}
+                type="text" placeholder={t('presupuesto.nombrePlaceholder')}
+                value={form.nombre} onChange={set('nombre')}
+                className={errors.nombre ? 'field-error' : ''}
               />
             </div>
-
             <div className="form-group">
-              <label>Descripción</label>
-              <textarea
-                placeholder="Cuéntanos qué quieres hacer, dimensiones, acabados, referencias..."
-                rows={4}
-                value={form.descripcion}
-                onChange={set('descripcion')}
+              <label>{t('presupuesto.telefono')}</label>
+              <input
+                type="tel" placeholder="+34 600 000 000"
+                value={form.telefono} onChange={set('telefono')}
+                className={errors.telefono ? 'field-error' : ''}
               />
             </div>
+          </div>
+
+          <div className="form-group">
+            <label>{t('presupuesto.emailLabel')}</label>
+            <input
+              type="email" placeholder={t('presupuesto.emailPlaceholder')}
+              value={form.email} onChange={set('email')}
+              className={errors.email ? 'field-error' : ''}
+            />
+          </div>
+
+          <div className="form-group">
+            <label>{t('presupuesto.descripcion')}</label>
+            <textarea
+              placeholder={t('presupuesto.descripcionPlaceholder')}
+              rows={4}
+              value={form.descripcion}
+              onChange={set('descripcion')}
+            />
+          </div>
 
           <label className={`form-consent${errors.acepta ? ' form-consent-error' : ''}`}>
             <input
@@ -148,17 +154,18 @@ export default function Presupuesto() {
               onChange={e => setForm(f => ({ ...f, acepta: e.target.checked }))}
             />
             <span>
-              He leído y acepto la información básica sobre protección de datos así como{' '}
-              <a href="/aviso-legal" target="_blank" rel="noopener noreferrer">el aviso legal</a>{' '}y la{' '}
-              <a href="/politica-privacidad" target="_blank" rel="noopener noreferrer">política de privacidad</a>{' '}
-              y acepto el tratamiento de mis datos para el trámite de la solicitud realizada.
+              {t('presupuesto.consent')}{' '}
+              <a href="/aviso-legal" target="_blank" rel="noopener noreferrer">{t('presupuesto.consentLegal')}</a>{' '}
+              {t('presupuesto.consentAnd')}{' '}
+              <a href="/politica-privacidad" target="_blank" rel="noopener noreferrer">{t('presupuesto.consentPrivacy')}</a>{' '}
+              {t('presupuesto.consentFinal')}
             </span>
           </label>
 
           <button type="submit" className="form-submit-wa" disabled={loading}>
-            {loading ? 'Enviando...' : (
+            {loading ? t('presupuesto.sending') : (
               <>
-                Enviar por WhatsApp
+                {t('presupuesto.send')}
                 <img src="/whatsapp.png" alt="" width="22" height="22" style={{ verticalAlign: 'middle', marginLeft: 8 }} />
               </>
             )}

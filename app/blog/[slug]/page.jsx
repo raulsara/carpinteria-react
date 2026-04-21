@@ -3,12 +3,10 @@ import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { supabase } from '../../../lib/supabase'
 import { renderMarkdown } from '../../../lib/markdown'
-
-function formatDate(d) {
-  return new Date(d).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' })
-}
+import { useLang } from '../../../lib/i18n'
 
 export default function BlogPost({ params }) {
+  const { t, lang } = useLang()
   const slug = params?.slug
   const [post, setPost]       = useState(null)
   const [loading, setLoading] = useState(true)
@@ -23,14 +21,16 @@ export default function BlogPost({ params }) {
       })
   }, [slug])
 
-  if (loading) return <main className="subpage"><p className="portfolio-empty">Cargando artículo...</p></main>
+  const formatDate = (d) => new Date(d).toLocaleDateString(lang === 'ca' ? 'ca-ES' : 'es-ES', { year: 'numeric', month: 'long', day: 'numeric' })
+
+  if (loading) return <main className="subpage"><p className="portfolio-empty">{t('blog.loading')}</p></main>
 
   if (!post) {
     return (
       <main className="subpage">
         <div className="portfolio-empty">
-          <p>No se ha encontrado este artículo.</p>
-          <Link href="/blog" className="btn-primary" style={{ marginTop: 20, display: 'inline-block' }}>Ver todos los artículos</Link>
+          <p>{t('blog.notFound')}</p>
+          <Link href="/blog" className="btn-primary" style={{ marginTop: 20, display: 'inline-block' }}>{t('blog.viewAll')}</Link>
         </div>
       </main>
     )
@@ -56,7 +56,7 @@ export default function BlogPost({ params }) {
         </div>
 
         <footer className="post-footer post-footer-cta">
-          <p className="post-footer-text">Si tienes alguna consulta, no dudes en contactar con nosotros.</p>
+          <p className="post-footer-text">{t('blog.footerText')}</p>
           <a
             href="https://wa.me/34607826072"
             target="_blank"
@@ -64,7 +64,7 @@ export default function BlogPost({ params }) {
             className="post-footer-wa"
           >
             <img src="/whatsapp.png" alt="" width="26" height="26" />
-            Chat WhatsApp
+            {t('common.chatWhatsApp')}
           </a>
         </footer>
       </article>

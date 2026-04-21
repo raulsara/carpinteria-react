@@ -2,12 +2,10 @@
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { supabase } from '../../lib/supabase'
-
-function formatDate(d) {
-  return new Date(d).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' })
-}
+import { useLang } from '../../lib/i18n'
 
 export default function BlogList() {
+  const { t, lang } = useLang()
   const [posts, setPosts]     = useState([])
   const [loading, setLoading] = useState(true)
 
@@ -22,19 +20,21 @@ export default function BlogList() {
       })
   }, [])
 
+  const formatDate = (d) => new Date(d).toLocaleDateString(lang === 'ca' ? 'ca-ES' : 'es-ES', { year: 'numeric', month: 'long', day: 'numeric' })
+
   return (
     <main className="subpage">
       <div className="subpage-head">
-        <span className="section-tag">Blog</span>
-        <h1 className="section-title">Ideas, consejos y proyectos</h1>
-        <p className="section-sub">Todo sobre el mundo de la madera, los trabajos que hacemos y las técnicas del oficio.</p>
+        <span className="section-tag">{t('blog.tag')}</span>
+        <h1 className="section-title">{t('blog.title')}</h1>
+        <p className="section-sub">{t('blog.subtitle')}</p>
       </div>
 
       {loading ? (
-        <p className="portfolio-empty">Cargando artículos...</p>
+        <p className="portfolio-empty">{t('blog.loading')}</p>
       ) : posts.length === 0 ? (
         <div className="portfolio-empty">
-          <p>Aún no hay artículos publicados. ¡Vuelve pronto!</p>
+          <p>{t('blog.empty')}</p>
         </div>
       ) : (
         <div className="blog-grid">
@@ -50,7 +50,7 @@ export default function BlogList() {
                 <h2>{p.titulo}</h2>
                 {p.subtitulo && <p className="blog-card-sub">{p.subtitulo}</p>}
                 {p.resumen && <p className="blog-card-resumen">{p.resumen}</p>}
-                <span className="blog-card-link">Leer más →</span>
+                <span className="blog-card-link">{t('blog.readMore')}</span>
               </div>
             </Link>
           ))}

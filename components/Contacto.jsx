@@ -1,27 +1,27 @@
+'use client'
 import Reveal from './Reveal'
-
-const CONTACT_ITEMS = [
-  { icon: '📍', title: 'Taller',   text: 'C/ Genís Sala, 30 · 08130 Santa Perpètua de Mogoda · Barcelona' },
-  { icon: '📞', title: 'Teléfono', text: '+34 607 826 072', href: 'tel:+34607826072' },
-  {
-    wa: true, title: 'WhatsApp', text: '+34 607 826 072',
-    href: 'https://wa.me/34607826072',
-  },
-  { icon: '✉️', title: 'Email',    text: 'info@maderarte.es', href: 'mailto:info@maderarte.es' },
-  { icon: '🕐', title: 'Horario',  text: 'Lun–Vie: 8:00–18:00' },
-]
+import { useLang } from '../lib/i18n'
 
 export default function Contacto() {
+  const { t } = useLang()
+  const items = [
+    { icon: '📍', title: t('contacto.taller'),   text: 'C/ Genís Sala, 30 · 08130 Santa Perpètua de Mogoda · Barcelona' },
+    { icon: '📞', title: t('contacto.telefono'), text: '+34 607 826 072', href: 'tel:+34607826072' },
+    { wa: true, title: t('contacto.whatsapp'), text: '+34 607 826 072', href: 'https://wa.me/34607826072' },
+    { icon: '✉️', title: t('contacto.email'),    text: 'info@maderarte.es', href: 'mailto:info@maderarte.es' },
+    { icon: '🕐', title: t('contacto.horario'),  text: t('contacto.horarioValor') },
+  ]
+
   return (
     <section id="contacto">
       <Reveal className="contact-header">
-        <span className="section-tag">Contacto</span>
-        <h2 className="section-title">Hablemos de tu proyecto</h2>
-        <p className="section-sub">Pásate por el taller, llámanos o escríbenos. Te atenderemos con mucho gusto.</p>
+        <span className="section-tag">{t('contacto.tag')}</span>
+        <h2 className="section-title">{t('contacto.title')}</h2>
+        <p className="section-sub">{t('contacto.subtitle')}</p>
       </Reveal>
 
       <div className="contact-cards">
-        {CONTACT_ITEMS.map(item => {
+        {items.map(item => {
           const body = (
             <>
               <div className={`contact-card-icon${item.wa ? ' contact-card-icon-wa' : ''}`}>

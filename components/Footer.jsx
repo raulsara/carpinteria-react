@@ -1,10 +1,14 @@
+'use client'
+import { useLang } from '../lib/i18n'
+
 export default function Footer() {
+  const { t } = useLang()
   return (
     <footer>
       <div className="footer-top">
         <div className="footer-brand">
           <a href="#hero" className="nav-logo">Mader<span>Arte</span></a>
-          <p>Carpintería artesanal con más de 35 años de experiencia. Cada pieza, una obra.</p>
+          <p>{t('footer.tagline')}</p>
           <div className="footer-social">
             <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
               <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
@@ -21,42 +25,43 @@ export default function Footer() {
           </div>
         </div>
         <div className="footer-col footer-col-tight">
-          <h5>Servicios</h5>
+          <h5>{t('footer.servicios')}</h5>
           <ul>
-            <li><a href="/parquet">Instalación de parquet</a></li>
-            <li><a href="/puertas">Puertas y ventanas</a></li>
-            <li><a href="#servicios">Cocinas integrales</a></li>
-            <li><a href="#servicios">Terrazas y exteriores</a></li>
-            <li><a href="#servicios">Muebles a medida</a></li>
-            <li><a href="#servicios">Estructuras de madera</a></li>
-            <li><a href="#servicios">Restauración</a></li>
+            <li><a href="/parquet">{t('services.parquet')}</a></li>
+            <li><a href="/puertas">{t('services.puertas')}</a></li>
+            <li><a href="#servicios">{t('services.cocinas')}</a></li>
+            <li><a href="#servicios">{t('services.terrazas')}</a></li>
+            <li><a href="#servicios">{t('services.muebles')}</a></li>
+            <li><a href="#servicios">{t('services.estructuras')}</a></li>
+            <li><a href="#servicios">{t('services.restauracion')}</a></li>
           </ul>
         </div>
         <div className="footer-col">
-          <h5>Empresa</h5>
+          <h5>{t('footer.empresa')}</h5>
           <ul>
-            <li><a href="#nosotros">Quiénes somos</a></li>
-            <li><a href="#portfolio">Galería</a></li>
-            <li><a href="#proceso">Cómo trabajamos</a></li>
-            <li><a href="#testimonios">Clientes</a></li>
+            <li><a href="#nosotros">{t('footer.empresaNosotros')}</a></li>
+            <li><a href="#portfolio">{t('footer.empresaGaleria')}</a></li>
+            <li><a href="/blog">{t('footer.empresaBlog')}</a></li>
+            <li><a href="#proceso">{t('footer.empresaProceso')}</a></li>
+            <li><a href="#testimonios">{t('footer.empresaClientes')}</a></li>
           </ul>
         </div>
         <div className="footer-col">
-          <h5>Contacto</h5>
+          <h5>{t('footer.contactoCol')}</h5>
           <ul>
-            <li><a href="#presupuesto">Pedir presupuesto</a></li>
-            <li><a href="#contacto">Contacto</a></li>
+            <li><a href="#presupuesto">{t('footer.contactoPedir')}</a></li>
+            <li><a href="#contacto">{t('footer.contactoContacto')}</a></li>
             <li><a href="tel:+34607826072">+34 607 826 072</a></li>
             <li><a href="mailto:info@maderarte.es">info@maderarte.es</a></li>
           </ul>
         </div>
       </div>
       <div className="footer-bottom">
-        <p>© {new Date().getFullYear()} MaderArte. Todos los derechos reservados.</p>
+        <p>© {new Date().getFullYear()} MaderArte. {t('footer.copyright')}</p>
         <div className="footer-legal">
-          <a href="/aviso-legal">Aviso legal</a>
-          <a href="/politica-privacidad">Política de privacidad</a>
-          <a href="/politica-cookies">Política de cookies</a>
+          <a href="/aviso-legal">{t('footer.legalAviso')}</a>
+          <a href="/politica-privacidad">{t('footer.legalPrivacidad')}</a>
+          <a href="/politica-cookies">{t('footer.legalCookies')}</a>
         </div>
       </div>
     </footer>

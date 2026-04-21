@@ -1,6 +1,9 @@
+'use client'
 import Reveal from './Reveal'
+import { useLang } from '../lib/i18n'
 
 export default function About() {
+  const { t } = useLang()
   return (
     <section id="nosotros" style={{ background: 'var(--cream)', padding: '96px 6%' }}>
       <div className="about-wrap">
@@ -9,23 +12,23 @@ export default function About() {
             <img src="/taller.jpg" alt="Taller de carpintería MaderArte" />
           </div>
           <div className="about-badge-float">
-            <strong>35</strong>
-            <span>años de oficio</span>
+            <strong>{t('about.badge1')}</strong>
+            <span>{t('about.badge2')}</span>
           </div>
         </Reveal>
         <Reveal className="about-text">
-          <span className="section-tag">Quiénes somos</span>
-          <h2 className="section-title">Pasión por la madera desde 1991</h2>
-          <p>Somos un taller familiar con más de 35 años de experiencia en carpintería artesanal. Combinamos técnicas tradicionales con herramientas modernas para garantizar resultados perfectos.</p>
-          <p>Cada pieza que fabricamos lleva el sello de nuestra dedicación: materiales seleccionados, acabados impecables y plazos de entrega cumplidos.</p>
+          <span className="section-tag">{t('about.tag')}</span>
+          <h2 className="section-title">{t('about.title')}</h2>
+          <p>{t('about.p1')}</p>
+          <p>{t('about.p2')}</p>
           <ul className="checklist">
-            <li>Maderas certificadas y sostenibles</li>
-            <li>Presupuesto sin compromiso en 24h</li>
-            <li>Garantía de 5 años en todos los trabajos</li>
-            <li>Instalación incluida en toda la provincia</li>
-            <li>Diseño personalizado con visita al domicilio</li>
+            <li>{t('about.check1')}</li>
+            <li>{t('about.check2')}</li>
+            <li>{t('about.check3')}</li>
+            <li>{t('about.check4')}</li>
+            <li>{t('about.check5')}</li>
           </ul>
-          <a href="#contacto" className="btn-primary">Hablar con un carpintero</a>
+          <a href="#presupuesto" className="btn-primary">{t('about.cta')}</a>
         </Reveal>
       </div>
     </section>
