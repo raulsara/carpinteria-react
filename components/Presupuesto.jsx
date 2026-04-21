@@ -9,7 +9,7 @@ const TIPO_LABELS = {
   parquet: 'Instalación de parquet', restauracion: 'Restauración', otro: 'Otro',
 }
 
-const EMPTY = { tipo: '', nombre: '', telefono: '', email: '', descripcion: '' }
+const EMPTY = { tipo: '', nombre: '', telefono: '', email: '', descripcion: '', acepta: false }
 
 export default function Presupuesto() {
   const [form, setForm]       = useState(EMPTY)
@@ -27,6 +27,7 @@ export default function Presupuesto() {
     if (!form.nombre?.trim())                    errs.nombre   = true
     if (!form.telefono?.trim())                  errs.telefono = true
     if (!form.email || !form.email.includes('@')) errs.email   = true
+    if (!form.acepta)                            errs.acepta   = true
     setErrors(errs)
     return Object.keys(errs).length === 0
   }
@@ -139,6 +140,17 @@ export default function Presupuesto() {
                 onChange={set('descripcion')}
               />
             </div>
+
+          <label className={`form-consent${errors.acepta ? ' form-consent-error' : ''}`}>
+            <input
+              type="checkbox"
+              checked={form.acepta}
+              onChange={e => setForm(f => ({ ...f, acepta: e.target.checked }))}
+            />
+            <span>
+              He leído y acepto la información básica sobre protección de datos así como el aviso legal y la política de privacidad y acepto el tratamiento de mis datos para el trámite de la solicitud realizada.
+            </span>
+          </label>
 
           <button type="submit" className="form-submit-wa" disabled={loading}>
             {loading ? 'Enviando...' : (
