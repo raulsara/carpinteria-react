@@ -12,7 +12,7 @@ export default function AvisoLegal() {
         <ul>
           <li><strong>Titular:</strong> Martínez Delgado, Salud (MaderArte)</li>
           <li><strong>NIF:</strong> 38551322X</li>
-          <li><strong>Domicilio:</strong> Paseo La Palma, 35 — Barcelona</li>
+          <li><strong>Domicilio:</strong> C/ Genís Sala, 30 — 08130 Santa Perpètua de Mogoda (Barcelona)</li>
           <li><strong>Correo electrónico:</strong> info@maderarte.es</li>
           <li><strong>Teléfono:</strong> +34 607 826 072</li>
         </ul>

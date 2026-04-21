@@ -1,7 +1,7 @@
 import Reveal from './Reveal'
 
 const CONTACT_ITEMS = [
-  { icon: '📍', title: 'Taller',   text: 'Paseo La Palma, 35' },
+  { icon: '📍', title: 'Taller',   text: 'C/ Genís Sala, 30 · 08130 Santa Perpètua de Mogoda · Barcelona' },
   { icon: '📞', title: 'Teléfono', text: '+34 607 826 072', href: 'tel:+34607826072' },
   {
     wa: true, title: 'WhatsApp', text: '+34 607 826 072',
