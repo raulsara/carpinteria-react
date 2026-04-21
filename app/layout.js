@@ -4,6 +4,15 @@ import { LanguageProvider } from '../lib/i18n'
 export const metadata = {
   title: 'MaderArte — Carpintería Artesanal',
   description: 'Carpintería artesanal con más de 35 años de experiencia. Muebles a medida, cocinas, puertas y más.',
+  icons: {
+    icon: '/logo.png',
+    apple: '/logo.png',
+  },
+  openGraph: {
+    title: 'MaderArte — Carpintería Artesanal',
+    description: 'Carpintería artesanal con más de 35 años de experiencia.',
+    images: ['/logo.png'],
+  },
 }
 
 export default function RootLayout({ children }) {

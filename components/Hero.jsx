@@ -7,6 +7,7 @@ export default function Hero() {
   return (
     <section id="hero">
       <Reveal className="hero-content">
+        <img src="/logo.png" alt="MaderArte" className="hero-logo" />
         <div className="hero-badge">✦ {t('hero.tag')}</div>
         <h1>{t('hero.titlePre')}<br /><em>{t('hero.titleHi')}</em></h1>
         <p>{t('hero.subtitle')}</p>

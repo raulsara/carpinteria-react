@@ -7,7 +7,9 @@ export default function Footer() {
     <footer>
       <div className="footer-top">
         <div className="footer-brand">
-          <a href="#hero" className="nav-logo">Mader<span>Arte</span></a>
+          <a href="#hero" className="nav-logo" aria-label="MaderArte">
+            <img src="/logo.png" alt="MaderArte" className="footer-logo-img" />
+          </a>
           <p>{t('footer.tagline')}</p>
           <div className="footer-social">
             <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Facebook">

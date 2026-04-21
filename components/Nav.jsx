@@ -19,7 +19,9 @@ export default function Nav() {
 
   return (
     <nav id="navbar" style={{ boxShadow: scrolled ? '0 4px 20px rgba(0,0,0,.25)' : 'none' }}>
-      <Link href="/" className="nav-logo" onClick={close}>Mader<span>Arte</span></Link>
+      <Link href="/" className="nav-logo" onClick={close} aria-label="MaderArte">
+        <img src="/logo.png" alt="MaderArte" className="nav-logo-img" />
+      </Link>
       <ul className={`nav-links ${menuOpen ? 'open' : ''}`}>
         <li><Link href="/#nosotros"    onClick={close}>{t('nav.nosotros')}</Link></li>
         <li><Link href="/#servicios"   onClick={close}>{t('nav.servicios')}</Link></li>
