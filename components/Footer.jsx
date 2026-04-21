@@ -36,6 +36,7 @@ export default function Footer() {
             <li><a href="#servicios">{t('services.muebles')}</a></li>
             <li><a href="#servicios">{t('services.estructuras')}</a></li>
             <li><a href="#servicios">{t('services.restauracion')}</a></li>
+            <li><a href="#servicios">{t('services.reformas')}</a></li>
           </ul>
         </div>
         <div className="footer-col">

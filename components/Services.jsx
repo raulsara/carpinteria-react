@@ -90,6 +90,15 @@ const IconRestauracion = () => (
   </svg>
 )
 
+const IconReformas = () => (
+  <svg viewBox="0 0 48 48" {...stroke}>
+    <path d="M8 42 L8 22 L24 8 L40 22 L40 42 Z" />
+    <line x1="4" y1="42" x2="44" y2="42" strokeWidth="1.5" />
+    <line x1="20" y1="36" x2="28" y2="28" strokeWidth="2.2" />
+    <path d="M26 24 L34 32 L31 35 L23 27 Z" strokeWidth="1.6" />
+  </svg>
+)
+
 function ServiceCard({ s, viewCatalogLabel }) {
   const ref = useRef(null)
   useEffect(() => {
@@ -127,6 +136,7 @@ export default function Services() {
     { Icon: IconMuebles,      title: t('services.muebles'),      desc: t('services.mueblesDesc') },
     { Icon: IconEstructuras,  title: t('services.estructuras'),  desc: t('services.estructurasDesc') },
     { Icon: IconRestauracion, title: t('services.restauracion'), desc: t('services.restauracionDesc') },
+    { Icon: IconReformas,     title: t('services.reformas'),     desc: t('services.reformasDesc') },
   ]
   return (
     <section id="servicios">
