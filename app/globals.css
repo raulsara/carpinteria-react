@@ -69,16 +69,15 @@ nav {
 .nav-logo-text span { color: var(--brown-light); }
 
 .nav-logo-img {
-  height: 54px;
+  height: 72px;
   width: auto;
   display: block;
-  background: var(--cream, #f5efe6);
+  background: #fff;
   border-radius: 50%;
-  padding: 4px;
   box-shadow: 0 2px 8px rgba(0,0,0,.25);
 }
 @media (max-width: 600px) {
-  .nav-logo-img { height: 44px; }
+  .nav-logo-img { height: 56px; }
   .nav-logo-text { font-size: 1.15rem; }
 }
 
