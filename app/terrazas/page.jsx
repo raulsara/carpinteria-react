@@ -39,10 +39,6 @@ export default function TerrazasPage() {
         <div className="terrazas-hero-content">
           <Reveal className="terrazas-hero-inner">
             <h1>{t('terrazas.heroTitle')}</h1>
-            <a href="/#presupuesto" className="terrazas-hero-cta">
-              {t('terrazas.heroCta')}
-              <span aria-hidden="true">↗</span>
-            </a>
           </Reveal>
         </div>
       </section>
@@ -90,7 +86,12 @@ export default function TerrazasPage() {
         </div>
         <Reveal className="terrazas-samples-cta-wrap">
           <a href="/#presupuesto" className="terrazas-samples-cta">
-            {t('terrazas.budgetCta')} <span aria-hidden="true">↗</span>
+            <span>{t('terrazas.budgetCta')}</span>
+            <span className="terrazas-cta-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M5 12h14M13 6l6 6-6 6" />
+              </svg>
+            </span>
           </a>
         </Reveal>
       </section>

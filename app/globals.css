@@ -1575,7 +1575,7 @@ footer { background: var(--brown-dark); }
   font-weight: 500;
   font-size: clamp(1.5rem, 3vw, 2.4rem);
   line-height: 1.25;
-  margin-bottom: 28px;
+  margin: 0;
   text-shadow: 0 2px 14px rgba(0,0,0,.4);
 }
 .terrazas-hero-cta {
@@ -1726,14 +1726,33 @@ footer { background: var(--brown-dark); }
   text-align: center;
 }
 .terrazas-samples-cta {
-  display: inline-flex; align-items: center; gap: 8px;
-  color: var(--text);
+  display: inline-flex; align-items: center; gap: 10px;
+  height: 52px;
+  padding: 0 22px 0 24px;
+  background: var(--brown-light);
+  color: #fff;
+  border: none;
+  border-radius: 50px;
   text-decoration: none;
-  font-size: .95rem; font-weight: 500;
-  border-bottom: 1px solid currentColor;
-  padding-bottom: 2px;
+  font-family: 'Inter', sans-serif;
+  font-size: .95rem; font-weight: 600;
+  box-shadow: 0 8px 24px rgba(200,135,75,.45);
+  transition: transform .2s, box-shadow .2s;
 }
-.terrazas-samples-cta:hover { color: var(--brown-light); }
+.terrazas-samples-cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(200,135,75,.6);
+}
+.terrazas-cta-icon {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 22px; height: 22px;
+  color: #fff;
+}
+.terrazas-cta-icon svg { width: 100%; height: 100%; display: block; }
+
+@media (max-width: 600px) {
+  .terrazas-samples-cta { padding: 0 18px 0 20px; font-size: .88rem; height: 48px; }
+}
 
 @media (max-width: 900px) {
   .terrazas-hero { height: 58vh; min-height: 420px; padding-top: 92px; border-bottom-left-radius: 30% 8%; border-bottom-right-radius: 30% 8%; }
