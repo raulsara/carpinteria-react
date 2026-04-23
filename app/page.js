@@ -9,10 +9,12 @@ import Contacto from '../components/Contacto'
 import Presupuesto from '../components/Presupuesto'
 import Footer from '../components/Footer'
 import WhatsAppButton from '../components/WhatsAppButton'
+import HashScroll from '../components/HashScroll'
 
 export default function Home() {
   return (
     <>
+      <HashScroll />
       <Nav />
       <Hero />
       <About />

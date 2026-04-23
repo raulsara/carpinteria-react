@@ -136,7 +136,7 @@ export default function Services() {
     { Icon: IconParquet,      title: t('services.parquet'),      desc: t('services.parquetDesc'),      href: '/parquet' },
     { Icon: IconPuertas,      title: t('services.puertas'),      desc: t('services.puertasDesc'),      href: '/puertas' },
     { Icon: IconCocinas,      title: t('services.cocinas'),      desc: t('services.cocinasDesc') },
-    { Icon: IconTerraza,      title: t('services.terrazas'),     desc: t('services.terrazasDesc') },
+    { Icon: IconTerraza,      title: t('services.terrazas'),     desc: t('services.terrazasDesc'),    href: '/terrazas' },
     { Icon: IconMuebles,      title: t('services.muebles'),      desc: t('services.mueblesDesc') },
     { Icon: IconEstructuras,  title: t('services.estructuras'),  desc: t('services.estructurasDesc') },
     { Icon: IconRestauracion, title: t('services.restauracion'), desc: t('services.restauracionDesc') },
